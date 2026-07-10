@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Godot",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "H:/godot/Godot_v4.7-stable_mono_win64/Godot_v4.7-stable_mono_win64.exe",
+            "args": [
+                "--path",
+                "${workspaceFolder}"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
