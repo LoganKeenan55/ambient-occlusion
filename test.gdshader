@@ -1,23 +1,16 @@
 shader_type spatial;
-render_mode unshaded;
 
-uniform vec3 lightPos;
-uniform vec3 worldPos;
-uniform vec3 	
+uniform sampler2D depthTexture:hint_depth_texture;
 
-vec3 lambertionDiffuse(vec3 normal){
-	float ambient = 0.1f;
-	vec3 lightVector = normalize(lightPos - worldPos);
-	float diffuse = max(dot(normal,lightVector),0.0f);
-	return vec3(ambient + diffuse);
+void vertex(){
 }
 
 
 void fragment() {
-	ALBEDO = lambertionDiffuse(NORMAL);
-}
+	float depth = texture(depthTexture, SCREEN_UV).r;
 
-void light() {
-//
-}
+	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
 
+	ALBEDO = vec3(depth*0.02f);
+	//ALPHA = 0.5f;
+}

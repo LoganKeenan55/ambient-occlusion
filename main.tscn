@@ -2,16 +2,50 @@
 
 [ext_resource type="Script" uid="uid://da5owm2tk14rp" path="res://Main.cs" id="1_0xm2m"]
 [ext_resource type="Shader" uid="uid://c1si4xr88ixcq" path="res://test.gdshader" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://be17e2fur6dm1" path="res://Camera.cs" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://scene.glb" id="3_h2yge"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v84pk"]
+[sub_resource type="SphereMesh" id="SphereMesh_m1upx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1upx"]
 render_priority = 0
 shader = ExtResource("2_h2yge")
 
-[sub_resource type="SphereMesh" id="SphereMesh_wfihs"]
-material = SubResource("ShaderMaterial_v84pk")
+[sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
+material = SubResource("ShaderMaterial_m1upx")
+size = Vector2(2, 2)
 
-[sub_resource type="SphereMesh" id="SphereMesh_m1upx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pt25t"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_o1wr5"]
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2, 0.843968, 1.3884728),
+"format": 34359742465,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAwAEAAEAAwAFAAQAAAAFAAMAAAAGAAUA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 7,
+"vertex_data": PackedByteArray("AACAvwAAAADq5cY+AACAPwAAAAAAAIC/AACAPwAAAADq5cY+AACAvwAAAAAAAIC/AACAP0kOWD8AAIC/AACAv0kOWD8AAIC/AACAv0kOWD/q5cY+")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4wedm"]
+resource_name = "scene_Plane"
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2, 0.843968, 1.3884728),
+"attribute_data": PackedByteArray("AAAAAAAAgD8AAIA/AAAAAAAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/"),
+"format": 34359742487,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
+"material": SubResource("StandardMaterial3D_pt25t"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("AACAvwAAAADq5cY+AACAPwAAAAAAAIC/AACAPwAAAADq5cY+AACAvwAAAAAAAIC/AACAvwAAAAAAAIC/AACAP0kOWD8AAIC/AACAPwAAAAAAAIC/AACAv0kOWD8AAIC/AACAvwAAAADq5cY+AACAv0kOWD8AAIC/AACAvwAAAAAAAIC/AACAv0kOWD/q5cY+/3///////7//f///////v/9///////+//3///////7//f/9/////P/9//3////8//3//f////z//f/9/////P////3////+/////f////7////9/////v////3////+/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_o1wr5")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpq34"]
 resource_name = "Material.001"
@@ -40,22 +74,32 @@ blend_shape_mode = 0
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
 
-[node name="Wall" type="MeshInstance3D" parent="." unique_id=508199788]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1730764, 0)
-mesh = SubResource("SphereMesh_wfihs")
-
 [node name="Light" type="MeshInstance3D" parent="." unique_id=1404141022]
-transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, 0.6713394, 0.48650527, 0.44548059)
+transform = Transform3D(0.515, 0, 0, 0, 0.515, 0, 0, 0, 0.515, -1.5800244, 0.43092978, 2.0028985)
 mesh = SubResource("SphereMesh_m1upx")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1182856397]
+[node name="Camera" type="Camera3D" parent="." unique_id=1182856397]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7107502, -0.060322106, 5.145385)
 current = true
+near = 0.119
+script = ExtResource("3_1bvp3")
+acceleration = 46.535
 
-[node name="scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera" unique_id=1006197821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15207815)
+mesh = SubResource("QuadMesh_wfihs")
+
+[node name="Scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7435386, -2.7122948, 3.1852455)
 
-[node name="Cube" parent="scene" index="1" unique_id=1971286309]
+[node name="Floor" type="MeshInstance3D" parent="Scene/Floor" parent_id_path=PackedInt32Array(824714672, 218945543) index="0" unique_id=995057103]
+transform = Transform3D(8.463952, 0, 0, 0, 8.463952, 0, 0, 0, 8.463952, 0, 0, -0.22046115)
+mesh = SubResource("ArrayMesh_4wedm")
+
+[node name="Cube" parent="Scene" index="1" unique_id=1317264367]
 mesh = SubResource("ArrayMesh_h2yge")
 
-[editable path="scene"]
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1404988065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9038725, -0.29767942, 0.60085917)
+
+[editable path="Scene"]
