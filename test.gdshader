@@ -50,11 +50,13 @@ void fragment() {
 	vec3 fragmentPos = view.xyz;
 	float occlusion = 0.0;
 	const float radius = 0.1;
+	const float bias = 0.025;
+
 	for(int i = 0; i < SAMPLE_COUNT; i++){
-		vec3 sample = samples[i];
+		vec3 sample = normalize(samples[i]) * radius;
 
 		//position near our fragment
-		vec3 samplePos = fragmentPos + sample * radius;
+		vec3 samplePos = fragmentPos + sample ;
 
 		//go back to clipspace
 		vec4 offset = PROJECTION_MATRIX * vec4(samplePos,1.0f);
@@ -75,7 +77,7 @@ void fragment() {
 		//NOW we have sampleView .xyz which is geometry at that sampled screen location
 
 		//is the real geometry closer to the camera than my imaginary sample? If yes sample is blocked occlusion = 1;
-		occlusion += sampleView.z > samplePos.z ? 1.0 : 0.0;
+		occlusion += sampleView.z > samplePos.z? 1.0 : 0.0;
 	}
 
 	occlusion /= float(SAMPLE_COUNT);
