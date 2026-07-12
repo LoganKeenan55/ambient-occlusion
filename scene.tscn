@@ -46,11 +46,9 @@ shadow_mesh = SubResource("ArrayMesh_u3cyc")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
 render_priority = 0
 shader = ExtResource("2_3253y")
-shader_parameter/lightPos = Vector3(0, 0, 0)
-shader_parameter/worldPos = Vector3(0, 0, 0)
 
 [node name="scene" unique_id=824714672 instance=ExtResource("1_nxogm")]
 
-[node name="Cube" parent="." index="1" unique_id=1971286309]
+[node name="Cube" parent="." index="1" unique_id=1317264367]
 mesh = SubResource("ArrayMesh_m7jmp")
 surface_material_override/0 = SubResource("ShaderMaterial_4c57u")
