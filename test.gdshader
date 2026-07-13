@@ -3,6 +3,7 @@ render_mode unshaded, blend_mix, depth_draw_never;
 
 uniform sampler2D depthTexture:hint_depth_texture;
 uniform sampler2D screenTexture:hint_screen_texture;
+uniform sampler2D noiseTexture : source_color, repeat_enable;
 
 uniform int mode;
 
@@ -52,11 +53,22 @@ void fragment() {
 	);
 	
 	vec3 fragmentPos = view.xyz;
+
 	float occlusion = 0.0;
+
 	const float radius = 0.1;
 
+	const vec2 noiseScale = VIEWPORT_SIZE / 4.0;
+	vec2 noiseVec = texture(noiseTexture, SCREEN_UV * noiseScale).xy * 2.0 - 1.0;
+	float noiseAngle = atan(noiseVec.y,noiseVec.x);
+
+	mat2 rotationMatrix = mat2(vec2(cos(noiseAngle),sin(noiseAngle)),vec2(-sin(noiseAngle),cos(noiseAngle)));
+	
 	for(int i = 0; i < SAMPLE_COUNT; i++){
+
 		vec3 sample = normalize(samples[i]) * radius;
+
+		sample.xy = rotationMatrix * sample.xy;
 
 		//position near our fragment
 		vec3 samplePos = fragmentPos + sample ;
