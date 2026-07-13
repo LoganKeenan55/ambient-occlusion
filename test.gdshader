@@ -1,6 +1,8 @@
 shader_type spatial;
+render_mode unshaded;
 
 uniform sampler2D depthTexture:hint_depth_texture;
+uniform sampler2D screenTexture:hint_screen_texture;
 
 void vertex(){
 }
@@ -76,14 +78,21 @@ void fragment() {
 		sampleView /= sampleView.w;
 		//NOW we have sampleView .xyz which is geometry at that sampled screen location
 
+		//distance from fragment we are shading and geometry
+		float rangeCheck = smoothstep(0.0,1.0,radius / abs(fragmentPos.z - sampleView.z));
+
 		//is the real geometry closer to the camera than my imaginary sample? If yes sample is blocked occlusion = 1;
-		occlusion += sampleView.z > samplePos.z? 1.0 : 0.0;
+		occlusion += (sampleView.z > samplePos.z? 1.0 : 0.0) * rangeCheck;
+		
+
 	}
 
 	occlusion /= float(SAMPLE_COUNT);
 
 	float ao = 1.0 - occlusion;
 
-	ALBEDO = vec3(ao);
+	vec3 color = texture(screenTexture,SCREEN_UV).rgb;
+	ALBEDO =  vec3(ao);
+	//ALBEDO =  color * ao;
 
 }

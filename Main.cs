@@ -5,7 +5,7 @@ public partial class Main : Node3D
 {
 
     public override void _Ready(){
-		createRandomPoints(200,2.0f,1.0f);
+		//createRandomPoints(200,2.0f,1.0f);
 	}
 
     public override void _Process(double delta){
