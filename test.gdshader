@@ -54,7 +54,6 @@ void fragment() {
 	vec3 fragmentPos = view.xyz;
 	float occlusion = 0.0;
 	const float radius = 0.1;
-	const float bias = 0.025;
 
 	for(int i = 0; i < SAMPLE_COUNT; i++){
 		vec3 sample = normalize(samples[i]) * radius;
