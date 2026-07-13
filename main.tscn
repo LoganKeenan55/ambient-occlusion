@@ -8,6 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m1upx"]
 render_priority = 0
 shader = ExtResource("2_h2yge")
+shader_parameter/mode = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
 material = SubResource("ShaderMaterial_m1upx")
@@ -43,6 +44,7 @@ ambient_light_color = Color(1, 1, 1, 1)
 
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
+mode = 2
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1182856397]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7107502, -0.060322106, 5.145385)
@@ -51,14 +53,14 @@ near = 0.119
 script = ExtResource("3_1bvp3")
 acceleration = 46.535
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera" unique_id=1006197821]
+[node name="SSAO" type="MeshInstance3D" parent="Camera" unique_id=1006197821]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15207815)
 mesh = SubResource("QuadMesh_wfihs")
 
 [node name="Scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7435386, -2.7122948, 3.1852455)
 
-[node name="Cube" parent="Scene" index="2" unique_id=1162212394]
+[node name="Cube" parent="Scene" index="3" unique_id=1118668482]
 mesh = SubResource("ArrayMesh_h2yge")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=228217960]

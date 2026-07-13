@@ -1,8 +1,10 @@
 shader_type spatial;
-render_mode unshaded;
+render_mode unshaded, blend_mix, depth_draw_never;
 
 uniform sampler2D depthTexture:hint_depth_texture;
 uniform sampler2D screenTexture:hint_screen_texture;
+
+uniform int mode;
 
 void vertex(){
 }
@@ -91,8 +93,19 @@ void fragment() {
 
 	float ao = 1.0 - occlusion;
 
-	vec3 color = texture(screenTexture,SCREEN_UV).rgb;
-	ALBEDO =  vec3(ao);
-	//ALBEDO =  color * ao;
+	vec4 screen = texture(screenTexture, SCREEN_UV);
+
+	if(mode == 0){
+		ALBEDO =  texture(screenTexture,SCREEN_UV).rgb;
+		ALPHA = screen.a;
+	}
+	else if (mode == 1){
+		ALBEDO =  vec3(ao);
+		ALPHA = screen.a;
+	}
+	else if (mode == 2){
+		ALBEDO =  texture(screenTexture,SCREEN_UV).rgb * ao;
+		ALPHA = screen.a;
+	}
 
 }
