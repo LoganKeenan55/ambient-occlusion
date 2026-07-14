@@ -7,6 +7,12 @@ public partial class Main : Node3D
 {
 	private ShaderMaterial material;
 	private MeshInstance3D shaderOverlay;
+	private MeshInstance3D blurOverlay;
+	private Camera3D mainCamera;
+	private Camera3D ssaoCamera;
+	private SubViewport ssaoViewport;
+	private SubViewport blurViewport;
+	private Camera3D blurCamera;
 
 	Image ssaoNoiseImage = Image.CreateEmpty(4, 4, false, Image.Format.Rgb8);
 	ImageTexture ssaoNoiseTexture;
@@ -15,11 +21,22 @@ public partial class Main : Node3D
 
 
     public override void _Ready(){
-		shaderOverlay = GetNode<Camera3D>("Camera").GetNode<MeshInstance3D>("SSAO");
+		mainCamera = GetNode<Camera3D>("Camera");
+		ssaoCamera = GetNode<Camera3D>("SubViewportContainer/SSAOViewport/SSAOCamera");
+		ssaoViewport = GetNode<SubViewport>("SubViewportContainer/SSAOViewport");
+
+		shaderOverlay = GetNode<MeshInstance3D>("SubViewportContainer/SSAOViewport/SSAOCamera/SSAO");
 		material = (ShaderMaterial)shaderOverlay.GetActiveMaterial(0);
 		
 		setssaoNoiseTexture();
 		material.SetShaderParameter("noiseTexture",ssaoNoiseTexture);
+		blurViewport = GetNode<SubViewport>("BlurViewport");
+		blurOverlay = GetNode<MeshInstance3D>("BlurViewport/Blur");
+		ShaderMaterial blurMaterial = (ShaderMaterial)blurOverlay.GetActiveMaterial(0);
+		blurMaterial.SetShaderParameter(
+			"aoTexture",
+			ssaoViewport.GetTexture()
+		);
 
 		material.SetShaderParameter("mode",mode);
 		//createRandomPoints(200,2.0f,1.0f);
@@ -28,6 +45,13 @@ public partial class Main : Node3D
 	}
 
     public override void _Process(double delta){
+		ssaoCamera.GlobalTransform = mainCamera.GlobalTransform;
+		ssaoCamera.Fov = mainCamera.Fov;
+		ssaoCamera.Near = mainCamera.Near;
+		ssaoCamera.Far = mainCamera.Far;
+
+
+
 		if (Input.IsActionJustPressed("esc")){
 			GetTree().Quit(); 
 			
