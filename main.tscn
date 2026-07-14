@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://be17e2fur6dm1" path="res://Camera.cs" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://scene.glb" id="3_h2yge"]
 [ext_resource type="Shader" uid="uid://c33tqfloqy6vv" path="res://blur.gdshader" id="4_1bvp3"]
-[ext_resource type="Script" uid="uid://djhnyysdex455" path="res://ssao.gd" id="5_lquwl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpq34"]
 resource_name = "Material.001"
@@ -42,26 +41,7 @@ ssao_sharpness = 0.08
 ssao_light_affect = 1.0
 ssao_ao_channel_affect = 1.0
 
-[sub_resource type="CompositorEffect" id="CompositorEffect_lquwl"]
-resource_local_to_scene = false
-resource_name = ""
-enabled = true
-effect_callback_type = 4
-needs_motion_vectors = false
-needs_normal_roughness = false
-script = ExtResource("5_lquwl")
-metadata/_custom_type_script = "uid://djhnyysdex455"
-
-[sub_resource type="Compositor" id="Compositor_lquwl"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_lquwl")])
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1upx"]
-render_priority = 0
-shader = ExtResource("2_h2yge")
-shader_parameter/mode = 0
-
-[sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
-material = SubResource("ShaderMaterial_m1upx")
+[sub_resource type="Compositor" id="Compositor_5vw27"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v84pk"]
 render_priority = 0
@@ -71,15 +51,17 @@ shader_parameter/textureSize = Vector2(1920, 1080)
 [sub_resource type="QuadMesh" id="QuadMesh_m1upx"]
 material = SubResource("ShaderMaterial_v84pk")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1upx"]
+render_priority = 0
+shader = ExtResource("2_h2yge")
+shader_parameter/mode = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
+material = SubResource("ShaderMaterial_m1upx")
+
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
 mode = 2
-
-[node name="Camera" type="Camera3D" parent="." unique_id=1182856397]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7107502, -0.060322106, 5.145385)
-near = 0.119
-script = ExtResource("3_1bvp3")
-acceleration = 46.535
 
 [node name="Scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7435386, -2.7122948, 3.1852455)
@@ -92,34 +74,36 @@ mesh = SubResource("ArrayMesh_h2yge")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=228217960]
 environment = SubResource("Environment_m1upx")
-compositor = SubResource("Compositor_lquwl")
+compositor = SubResource("Compositor_5vw27")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1822489008]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="BlurViewport" type="SubViewport" parent="SubViewportContainer" unique_id=310998727]
+
+[node name="BlurCamera" type="Camera3D" parent="SubViewportContainer/BlurViewport" unique_id=831904789]
+visible = false
+script = ExtResource("3_1bvp3")
+
+[node name="Blur" type="MeshInstance3D" parent="SubViewportContainer/BlurViewport/BlurCamera" unique_id=1099297609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3677948)
+visible = false
+mesh = SubResource("QuadMesh_m1upx")
+
 [node name="SSAOViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1627188735]
 handle_input_locally = false
 size = Vector2i(1920, 1080)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="SSAOCamera" type="Camera3D" parent="SubViewportContainer/SSAOViewport" unique_id=1649692123]
-visible = false
+script = ExtResource("3_1bvp3")
 
 [node name="SSAO" type="MeshInstance3D" parent="SubViewportContainer/SSAOViewport/SSAOCamera" unique_id=1006197821]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13068116)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.36003065)
 mesh = SubResource("QuadMesh_wfihs")
-
-[node name="BlurViewport" type="SubViewport" parent="." unique_id=310998727]
-
-[node name="Blur" type="MeshInstance3D" parent="BlurViewport" unique_id=1099297609]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055069864)
-visible = false
-mesh = SubResource("QuadMesh_m1upx")
 
 [editable path="Scene"]

@@ -97,10 +97,7 @@ void main(){
 
 	for(int i = 0; i < SAMPLE_COUNT; i++){
 
-		vec3 sampleOffset = TBN * normalize(samples[i]);
-		sampleOffset *= radius;
-
-		vec3 samplePos = fragmentPos + sampleOffset;
+		vec3 sampleOffset = normalize(samples[i]) * radius;
 
 		vec3 randomVec = normalize(vec3(noiseVec * 2.0 - 1.0, 0.0));
 
