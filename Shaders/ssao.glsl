@@ -19,21 +19,15 @@ layout(set = 0, binding = 1) uniform sampler2D depthTexture;
 
 layout(set = 0, binding = 2) uniform sampler2D noiseTexture;
 
-layout(set = 0, binding = 4) uniform sampler2D normalTexture;
-
 void main(){
-	vec3 normal = texture(normalTexture, SCREEN_UV).xyz;
-	normal = normal * 2.0 - 1.0;
-	normal = normalize(normal);
 	ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
 
-	if(pixel.x >= int(push_constants.VIEWPORT_SIZE.x) ||
+	if (pixel.x >= int(push_constants.VIEWPORT_SIZE.x) ||
 		pixel.y >= int(push_constants.VIEWPORT_SIZE.y))
 		return;
 
 	vec2 SCREEN_UV = (vec2(pixel) + vec2(0.5)) / push_constants.VIEWPORT_SIZE;
 
-	//depth at current fragment
 	float depth = texture(depthTexture, SCREEN_UV).r;
 
 	//convert SCREEN_UV from 0,1 to clip space -1,-1
@@ -98,13 +92,7 @@ void main(){
 	for(int i = 0; i < SAMPLE_COUNT; i++){
 
 		vec3 sampleOffset = normalize(samples[i]) * radius;
-
-		vec3 randomVec = normalize(vec3(noiseVec * 2.0 - 1.0, 0.0));
-
-		vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
-		vec3 bitangent = cross(normal, tangent);
-
-		mat3 TBN = mat3(tangent, bitangent, normal);
+		sampleOffset.xy = rotationMatrix * sampleOffset.xy;
 
 		//position near our fragment
 		vec3 samplePos = fragmentPos + sampleOffset;

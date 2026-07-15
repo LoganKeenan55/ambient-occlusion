@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://c5kd8lkcdwgps"
+path="res://.godot/imported/bilateralBlur.glsl-50bd9dc8c914648dfd10546ce0d17bd4.res"
+
+[deps]
+
+source_file="res://Shaders/bilateralBlur.glsl"
+dest_files=["res://.godot/imported/bilateralBlur.glsl-50bd9dc8c914648dfd10546ce0d17bd4.res"]
+
+[params]
+
