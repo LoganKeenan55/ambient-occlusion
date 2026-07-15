@@ -19,11 +19,12 @@ layout(set = 0, binding = 1) uniform sampler2D depthTexture;
 
 layout(set = 0, binding = 2) uniform sampler2D noiseTexture;
 
+layout(set = 0, binding = 4) uniform sampler2D normalTexture;
+
 void main(){
 	ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
 
-	if (pixel.x >= int(push_constants.VIEWPORT_SIZE.x) ||
-		pixel.y >= int(push_constants.VIEWPORT_SIZE.y))
+	if (pixel.x >= int(push_constants.VIEWPORT_SIZE.x) || pixel.y >= int(push_constants.VIEWPORT_SIZE.y))
 		return;
 
 	vec2 SCREEN_UV = (vec2(pixel) + vec2(0.5)) / push_constants.VIEWPORT_SIZE;
@@ -41,29 +42,74 @@ void main(){
 
 	//in view space camera is always at 0,0,0
 
-	const int SAMPLE_COUNT = 20;
+	const int SAMPLE_COUNT = 64;
 
 	const vec3 samples[SAMPLE_COUNT] = vec3[](
-		vec3(0.53,-0.39,-0.97),
-		vec3(0.42,-0.9,0.51),
-		vec3(0.74,-0.04,-0.29),
-		vec3(-0.7,0.35,0.06),
-		vec3(0.64,-0.53,-0.73),
-		vec3(-0.19,-0.71,-0.7),
-		vec3(-0.53,0.3,0.74),
-		vec3(-0.39,0.3,0.77),
-		vec3(-0.77,-0.24,1),
-		vec3(0.58,-0.92,0.5),
-		vec3(0.63,-0.39,0.75),
-		vec3(-0.12,0.92,-0.74),
-		vec3(-0.17,-0.68,0.46),
-		vec3(-0.5,0.07,0.01),
-		vec3(0.39,-0.32,0.14),
-		vec3(0.99,0.86,0.87),
-		vec3(0.38,0.93,0.58),
-		vec3(0.24,-0.65,-0.32),
-		vec3(0.56,0.49,-0.13),
-		vec3(0.44,-0.03,-0.57)
+		vec3(0.08,-0.07,0.07),
+		vec3(-0.02,-0.05,0.04),
+		vec3(-0.01,0.08,0.03),
+		vec3(-0.04,0.1,0.08),
+		vec3(-0.04,-0.09,0.1),
+		vec3(-0.03,0.04,0.08),
+		vec3(-0.02,0.07,0.02),
+		vec3(0.01,0.08,0.05),
+		vec3(0.06,-0.06,0.1),
+		vec3(0.04,-0.11,0.03),
+		vec3(0.12,0.05,0.05),
+		vec3(0.04,0.01,0.11),
+		vec3(-0.11,0.09,0.12),
+		vec3(0.07,-0.04,0.13),
+		vec3(-0.01,0.07,0.08),
+		vec3(-0.04,-0.04,0.08),
+		vec3(-0.08,0,0.01),
+		vec3(0.16,0,0.07),
+		vec3(0.04,0.05,0.01),
+		vec3(-0.13,-0,0.12),
+		vec3(0.14,-0.04,0.17),
+		vec3(0.08,0.19,0.05),
+		vec3(-0.14,-0.18,0.2),
+		vec3(0.21,-0.03,0.09),
+		vec3(-0.06,0.12,0.2),
+		vec3(0.05,0.06,0.09),
+		vec3(-0.15,0.11,0.03),
+		vec3(0.16,0.14,0.06),
+		vec3(0.17,0.25,0.23),
+		vec3(-0.24,-0.15,0.26),
+		vec3(-0.26,-0.05,0.03),
+		vec3(0.08,-0.23,0.05),
+		vec3(-0.18,0.06,0.12),
+		vec3(0.31,0.08,0.13),
+		vec3(0.04,0.16,0.22),
+		vec3(0.13,-0.16,0.2),
+		vec3(0.22,0.24,0.18),
+		vec3(0.29,-0.31,0.04),
+		vec3(0.23,0.28,0.28),
+		vec3(-0.4,0.4,0.36),
+		vec3(0.41,-0.39,0.25),
+		vec3(-0.28,-0.31,0.2),
+		vec3(0.2,-0.18,0.28),
+		vec3(-0.06,-0.21,0.04),
+		vec3(0.26,-0.32,0.49),
+		vec3(-0.37,0.26,0.07),
+		vec3(-0.39,0.16,0.55),
+		vec3(0.3,-0.55,0.39),
+		vec3(-0.41,-0.25,0.23),
+		vec3(-0.2,0.61,0.19),
+		vec3(0.55,0.58,0.31),
+		vec3(-0.03,0.45,0.63),
+		vec3(-0.54,-0.51,0.22),
+		vec3(-0.27,-0.04,0.11),
+		vec3(-0.13,-0.01,0.64),
+		vec3(-0.7,0.4,0.65),
+		vec3(-0.51,0.55,0.32),
+		vec3(0.07,0.65,0.66),
+		vec3(-0.52,-0.28,0.12),
+		vec3(0.43,0.2,0.61),
+		vec3(0.28,0.42,0.24),
+		vec3(0.17,0.92,0.64),
+		vec3(0.24,0.12,0.86),
+		vec3(-0.3,-0.96,0.87)
+
 	);
 
 	vec3 fragmentPos = view.xyz;
@@ -73,21 +119,17 @@ void main(){
 	const float radius = 0.1;
 
 	vec2 noiseScale = push_constants.VIEWPORT_SIZE / 4.0;
-
 	ivec2 texel = ivec2(mod(floor(SCREEN_UV * push_constants.VIEWPORT_SIZE), 4.0));
-
-    vec2 noiseVec = texelFetch(
-            noiseTexture,
-            texel,
-            0
-        ).xy;
-
+    vec2 noiseVec = texelFetch(noiseTexture,texel,0).xy;
 	float noiseAngle = atan(noiseVec.y, noiseVec.x);
 
 	mat2 rotationMatrix = mat2(
 		vec2(cos(noiseAngle), sin(noiseAngle)),
 		vec2(-sin(noiseAngle), cos(noiseAngle))
 	);
+
+	vec3 normal = texture(normalTexture,SCREEN_UV).xyz;
+	normal = normalize(normal * 2.0 - 1.0);
 
 	for(int i = 0; i < SAMPLE_COUNT; i++){
 
