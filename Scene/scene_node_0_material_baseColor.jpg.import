@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy41ewm0em1m6"
-path.s3tc="res://.godot/imported/scene_wallpaper.jpg-481d9f3d4e1701f7b9ebfacef632fb9d.s3tc.ctex"
+uid="uid://44mbjvghxbwf"
+path.s3tc="res://.godot/imported/scene_node_0_material_baseColor.jpg-c1773bc4c2cdc873205d3405e0ac3802.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "8f78e90f7ac5ed31d215fc680c3aec2d"
+"md5": "6ac24ba8ace1b0dc99ffe2a5b3eb15d9"
 }
 
 [deps]
 
-source_file="res://scene_wallpaper.jpg"
-dest_files=["res://.godot/imported/scene_wallpaper.jpg-481d9f3d4e1701f7b9ebfacef632fb9d.s3tc.ctex"]
+source_file="res://Scene/scene_node_0_material_baseColor.jpg"
+dest_files=["res://.godot/imported/scene_node_0_material_baseColor.jpg-c1773bc4c2cdc873205d3405e0ac3802.s3tc.ctex"]
 
 [params]
 

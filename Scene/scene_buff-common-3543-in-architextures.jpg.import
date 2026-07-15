@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d11pwm26daeyu"
-path.s3tc="res://.godot/imported/scene_dragfaced-brick-stretcher-3543-in-architextures.jpg-1f7f1c338c4326337171557966abff90.s3tc.ctex"
+uid="uid://cmr8mormjq7a8"
+path.s3tc="res://.godot/imported/scene_buff-common-3543-in-architextures.jpg-38ac98bd92aab835932fdf5b9be1ed32.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "4cd797620191a0a1cb79ccb63e8b0add"
+"md5": "694fe232ecb3adfab6ee8ba1829e52cc"
 }
 
 [deps]
 
-source_file="res://scene_dragfaced-brick-stretcher-3543-in-architextures.jpg"
-dest_files=["res://.godot/imported/scene_dragfaced-brick-stretcher-3543-in-architextures.jpg-1f7f1c338c4326337171557966abff90.s3tc.ctex"]
+source_file="res://Scene/scene_buff-common-3543-in-architextures.jpg"
+dest_files=["res://.godot/imported/scene_buff-common-3543-in-architextures.jpg-38ac98bd92aab835932fdf5b9be1ed32.s3tc.ctex"]
 
 [params]
 

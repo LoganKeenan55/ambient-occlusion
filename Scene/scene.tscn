@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://xafrd3t7wnlb"]
 
-[ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://scene.glb" id="1_nxogm"]
-[ext_resource type="Shader" uid="uid://c1si4xr88ixcq" path="res://test.gdshader" id="2_3253y"]
+[ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://Scene/scene.glb" id="1_nxogm"]
+[ext_resource type="Shader" path="res://test.gdshader" id="2_3253y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpq34"]
 resource_name = "Material.001"

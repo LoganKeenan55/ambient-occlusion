@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://crspwym03omhy"]
 
-[ext_resource type="Script" uid="uid://da5owm2tk14rp" path="res://Main.cs" id="1_0xm2m"]
-[ext_resource type="Script" uid="uid://be17e2fur6dm1" path="res://Camera.cs" id="3_1bvp3"]
-[ext_resource type="Script" uid="uid://dmu5eajdiqh55" path="res://ssao.gd" id="3_7mycd"]
-[ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://scene.glb" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://da5owm2tk14rp" path="res://Scripts/Main.cs" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://be17e2fur6dm1" path="res://Scripts/Camera.cs" id="3_1bvp3"]
+[ext_resource type="Script" uid="uid://dmu5eajdiqh55" path="res://Scripts/ssao.gd" id="3_7mycd"]
+[ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://Scene/scene.glb" id="3_h2yge"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpq34"]
 resource_name = "Material.001"
@@ -47,8 +47,9 @@ resource_name = ""
 enabled = true
 effect_callback_type = 4
 needs_motion_vectors = false
-needs_normal_roughness = false
+needs_normal_roughness = true
 script = ExtResource("3_7mycd")
+renderMode = null
 metadata/_custom_type_script = "uid://djhnyysdex455"
 
 [sub_resource type="Compositor" id="Compositor_5vw27"]
@@ -64,10 +65,10 @@ script = ExtResource("3_1bvp3")
 [node name="Scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7435386, -2.7122948, 3.1852455)
 
-[node name="walls" parent="Scene" index="2" unique_id=869580822]
+[node name="walls" parent="Scene" index="2" unique_id=1904757726]
 transform = Transform3D(8.463952, 0, 0, 0, 8.463952, 0, 0, 0, 8.463952, -0.0021002293, 0.0018167496, 0.0030195713)
 
-[node name="Cube" parent="Scene" index="3" unique_id=1729170282]
+[node name="Cube" parent="Scene" index="3" unique_id=731225406]
 mesh = SubResource("ArrayMesh_h2yge")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=228217960]

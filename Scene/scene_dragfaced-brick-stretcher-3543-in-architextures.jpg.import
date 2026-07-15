@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0uenpgsvyfwy"
-path.s3tc="res://.godot/imported/scene_skull.png-73f331835d69761b8e15169b71e4d7c5.s3tc.ctex"
+uid="uid://d11pwm26daeyu"
+path.s3tc="res://.godot/imported/scene_dragfaced-brick-stretcher-3543-in-architextures.jpg-5a751ebbcab31dc238534e1b081e47a2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "39a4b8e9cb9d566249c46493d3e600e2"
+"md5": "4cd797620191a0a1cb79ccb63e8b0add"
 }
 
 [deps]
 
-source_file="res://scene_skull.png"
-dest_files=["res://.godot/imported/scene_skull.png-73f331835d69761b8e15169b71e4d7c5.s3tc.ctex"]
+source_file="res://Scene/scene_dragfaced-brick-stretcher-3543-in-architextures.jpg"
+dest_files=["res://.godot/imported/scene_dragfaced-brick-stretcher-3543-in-architextures.jpg-5a751ebbcab31dc238534e1b081e47a2.s3tc.ctex"]
 
 [params]
 

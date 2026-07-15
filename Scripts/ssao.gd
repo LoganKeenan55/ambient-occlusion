@@ -1,6 +1,8 @@
-@tool
+#@tool
 extends CompositorEffect
 class_name SSAOEffect
+
+@export_enum("Flat", "AO Only", "Composited") var renderMode: int = 2
 
 var rd: RenderingDevice
 
@@ -143,6 +145,13 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 		0.0
 	]).to_byte_array()
 
+	var blur_push_constants := PackedFloat32Array([
+		size.x,
+		size.y,
+		float(renderMode),
+		0.0
+	]).to_byte_array()
+
 	for view in scene_buffers.get_view_count():
 
 		var normal_uniform := RDUniform.new()
@@ -265,8 +274,8 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 
 		rd.compute_list_set_push_constant(
 			blur_compute,
-			push_constants,
-			push_constants.size()
+			blur_push_constants,
+			blur_push_constants.size()
 		)
 
 		rd.compute_list_dispatch(

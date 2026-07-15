@@ -19,12 +19,21 @@ void main() {
         pixel.y >= int(push_constants.VIEWPORT_SIZE.y))
         return;
 
+    int mode = int(push_constants.padding.x);
+
     vec2 uv = (vec2(pixel) + vec2(0.5)) / push_constants.VIEWPORT_SIZE;
     vec2 texel_size = 1.0 / push_constants.VIEWPORT_SIZE;
 
+    vec4 color = imageLoad(colorImage, pixel);
+
+    if (mode == 0) {
+        // Flat: leave color untouched
+        return;
+    }
+
     float centerDepth = texture(depthTexture, uv).r;
 
-    const int BLUR_RADIUS = 2; //5x5 kernel
+    const int BLUR_RADIUS = 2;
     const float depthThreshold = 0.001;
 
     float aoSum = 0.0;
@@ -38,7 +47,6 @@ void main() {
             float sampleDepth = texture(depthTexture, sampleUV).r;
             float depthDiff = abs(sampleDepth - centerDepth);
 
-            //rject samples that are on a different surface
             float weight = (depthDiff < depthThreshold) ? 1.0 : 0.0;
 
             aoSum += texture(aoTexture, sampleUV).r * weight;
@@ -48,6 +56,9 @@ void main() {
 
     float ao = (weightSum > 0.0) ? (aoSum / weightSum) : texture(aoTexture, uv).r;
 
-    vec4 color = imageLoad(colorImage, pixel);
-    imageStore(colorImage, pixel, vec4(color.rgb * ao, color.a));
+    if (mode == 1) {
+        imageStore(colorImage, pixel, vec4(vec3(ao), color.a));
+    } else if (mode == 2) {
+        imageStore(colorImage, pixel, vec4(color.rgb * ao, color.a));
+    }
 }

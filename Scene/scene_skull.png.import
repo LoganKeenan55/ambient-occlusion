@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://44mbjvghxbwf"
-path.s3tc="res://.godot/imported/scene_node_0_material_baseColor.jpg-0c57b3c69617bdfe424033a0fe01afe9.s3tc.ctex"
+uid="uid://d0uenpgsvyfwy"
+path.s3tc="res://.godot/imported/scene_skull.png-d4a60bb0f89747578c5ce96b1c6d21ea.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "6ac24ba8ace1b0dc99ffe2a5b3eb15d9"
+"md5": "39a4b8e9cb9d566249c46493d3e600e2"
 }
 
 [deps]
 
-source_file="res://scene_node_0_material_baseColor.jpg"
-dest_files=["res://.godot/imported/scene_node_0_material_baseColor.jpg-0c57b3c69617bdfe424033a0fe01afe9.s3tc.ctex"]
+source_file="res://Scene/scene_skull.png"
+dest_files=["res://.godot/imported/scene_skull.png-d4a60bb0f89747578c5ce96b1c6d21ea.s3tc.ctex"]
 
 [params]
 

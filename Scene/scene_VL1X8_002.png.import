@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dd5tdqkbdy01b"
-path.s3tc="res://.godot/imported/scene_stalk_003_gradient.jpg-c971c5d5dba7eae3613e57e5af866bd6.s3tc.ctex"
+uid="uid://dnnwdg4qio4c3"
+path.s3tc="res://.godot/imported/scene_VL1X8_002.png-695f7ce0fdbc6aac98d2cc71025c34d2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "08cb3c39aa50a42a93f13e1d64a03663"
+"md5": "fb15d0793a3be8186ca4ab460996346f"
 }
 
 [deps]
 
-source_file="res://scene_stalk_003_gradient.jpg"
-dest_files=["res://.godot/imported/scene_stalk_003_gradient.jpg-c971c5d5dba7eae3613e57e5af866bd6.s3tc.ctex"]
+source_file="res://Scene/scene_VL1X8_002.png"
+dest_files=["res://.godot/imported/scene_VL1X8_002.png-695f7ce0fdbc6aac98d2cc71025c34d2.s3tc.ctex"]
 
 [params]
 
