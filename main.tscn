@@ -12,6 +12,10 @@ shader_parameter/mode = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
 material = SubResource("ShaderMaterial_m1upx")
+<<<<<<< HEAD
+=======
+size = Vector2(20.66, 13.205)
+>>>>>>> parent of ef9ec30 (nothing works everything is broken)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpq34"]
 resource_name = "Material.001"
@@ -40,6 +44,7 @@ blend_shape_mode = 0
 [sub_resource type="Environment" id="Environment_m1upx"]
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
+<<<<<<< HEAD
 ssao_radius = 1.16
 ssao_intensity = 11.9
 ssao_detail = 5.0
@@ -49,29 +54,42 @@ ssao_light_affect = 1.0
 ssao_ao_channel_affect = 1.0
 
 [sub_resource type="Compositor" id="Compositor_5vw27"]
+=======
+>>>>>>> parent of ef9ec30 (nothing works everything is broken)
 
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
 mode = 2
 
+<<<<<<< HEAD
 [node name="SSAOCamera" type="Camera3D" parent="." unique_id=1649692123]
+=======
+[node name="Camera" type="Camera3D" parent="." unique_id=1182856397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7107502, -0.060322106, 5.145385)
+current = true
+near = 0.119
+>>>>>>> parent of ef9ec30 (nothing works everything is broken)
 script = ExtResource("3_1bvp3")
 
 [node name="SSAO" type="MeshInstance3D" parent="SSAOCamera" unique_id=1006197821]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35340726)
 mesh = SubResource("QuadMesh_wfihs")
 
+[node name="SSAO" type="MeshInstance3D" parent="Camera" unique_id=1006197821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15207815)
+mesh = SubResource("QuadMesh_wfihs")
+
 [node name="Scene" parent="." unique_id=824714672 instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7435386, -2.7122948, 3.1852455)
-
-[node name="walls" parent="Scene" index="2" unique_id=869580822]
-transform = Transform3D(8.463952, 0, 0, 0, 8.463952, 0, 0, 0, 8.463952, -0.0021002293, 0.0018167496, 0.0030195713)
 
 [node name="Cube" parent="Scene" index="3" unique_id=1729170282]
 mesh = SubResource("ArrayMesh_h2yge")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=228217960]
 environment = SubResource("Environment_m1upx")
+<<<<<<< HEAD
 compositor = SubResource("Compositor_5vw27")
+=======
+>>>>>>> parent of ef9ec30 (nothing works everything is broken)
 
 [editable path="Scene"]

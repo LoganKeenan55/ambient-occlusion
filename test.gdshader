@@ -21,10 +21,13 @@ void fragment() {
 
 	//get view space from inverting proj matrix from clip space
 	vec4 view = INV_PROJECTION_MATRIX * clip;
-	
+
 	//perspective divide
 	view /= view.w;
+<<<<<<< HEAD
 	 
+=======
+>>>>>>> parent of ef9ec30 (nothing works everything is broken)
 
 	//in view space camera is always at 0,0,0
 
