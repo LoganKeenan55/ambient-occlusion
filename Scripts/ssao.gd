@@ -19,7 +19,6 @@ var depth_sampler: RID
 var noise_sampler: RID
 
 var camera_uniform: RID
-
 var noise_image: Image
 var noise_texture: ImageTexture
 var rd_noise_texture: RID
@@ -27,7 +26,6 @@ var rd_noise_texture: RID
 var ao_sampler: RID
 
 func _init():
-
 	effect_callback_type = EFFECT_CALLBACK_TYPE_POST_TRANSPARENT
 
 	rd = RenderingServer.get_rendering_device()
@@ -53,12 +51,11 @@ func _init():
 	noise_sampler = rd.sampler_create(RDSamplerState.new())
 	ao_sampler = rd.sampler_create(RDSamplerState.new())
 
-	_create_noise_texture()
-	_upload_noise_texture()
+	createNoiseTexture()
+	uploadNoiseTexture()
 
 
 func _notification(what):
-
 	if what != NOTIFICATION_PREDELETE:
 		return
 
@@ -91,7 +88,6 @@ func _notification(what):
 		rd.free_rid(ao_sampler)
 
 func _render_callback(_callback_type:int, render_data:RenderData):
-
 	var scene_buffers := render_data.get_render_scene_buffers() as RenderSceneBuffersRD
 
 	if scene_buffers == null:
@@ -109,7 +105,6 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 
 	var projection = scene_data.get_cam_projection()
 	var inv_projection = projection.inverse()
-
 	var camera_bytes := PackedByteArray()
 
 	camera_bytes.append_array(
@@ -152,8 +147,8 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 		0.0
 	]).to_byte_array()
 
-	for view in scene_buffers.get_view_count():
 
+	for view in scene_buffers.get_view_count():
 		var normal_uniform := RDUniform.new()
 		normal_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE
 		normal_uniform.binding = 4
@@ -258,7 +253,6 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 			blur_shader,
 			0
 		)
-
 		var blur_compute := rd.compute_list_begin()
 
 		rd.compute_list_bind_compute_pipeline(
@@ -289,8 +283,9 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 
 		rd.free_rid(blur_uniform_set)
 
-func _create_noise_texture():
 
+
+func createNoiseTexture():
 	noise_image = Image.create_empty(
 		4,
 		4,
@@ -301,31 +296,17 @@ func _create_noise_texture():
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 
-	for y in range(4):
-		for x in range(4):
+	for i in range(4):
+		for j in range(4):
 
-			var value := Vector3(
-				rng.randf_range(-1.0, 1.0),
-				rng.randf_range(-1.0, 1.0),
-				0.0
-			).normalized()
+			var value := Vector3(rng.randf_range(-1.0, 1.0),rng.randf_range(-1.0, 1.0),0.0).normalized()
 
-			noise_image.set_pixel(
-				x,
-				y,
-				Color(
-					value.x * 0.5 + 0.5,
-					value.y * 0.5 + 0.5,
-					0.5,
-					1.0
-				)
-			)
+			noise_image.set_pixel(j,i,Color(value.x * 0.5 + 0.5, value.y * 0.5 + 0.5, 0.5,1.0))
 
 	noise_texture = ImageTexture.create_from_image(noise_image)
 
 
-func _upload_noise_texture():
-
+func uploadNoiseTexture():
 	if rd_noise_texture.is_valid():
 		rd.free_rid(rd_noise_texture)
 
@@ -358,13 +339,10 @@ func _upload_noise_texture():
 	rd_noise_texture = rd.texture_create(
 		format,
 		view,
-		[
-			img.get_data()
-		]
+		[img.get_data()]
 	)
 
 func _create_ao_texture(size: Vector2i):
-
 	if ao_texture.is_valid():
 		rd.free_rid(ao_texture)
 
