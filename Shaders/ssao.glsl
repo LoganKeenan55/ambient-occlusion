@@ -118,26 +118,24 @@ void main(){
 
 	const float radius = 0.1;
 
-	vec2 noiseScale = push_constants.VIEWPORT_SIZE / 4.0;
 	ivec2 texel = ivec2(mod(floor(SCREEN_UV * push_constants.VIEWPORT_SIZE), 4.0));
     vec2 noiseVec = texelFetch(noiseTexture,texel,0).xy;
-	float noiseAngle = atan(noiseVec.y, noiseVec.x);
-
-	mat2 rotationMatrix = mat2(
-		vec2(cos(noiseAngle), sin(noiseAngle)),
-		vec2(-sin(noiseAngle), cos(noiseAngle))
-	);
 
 	vec3 normal = texture(normalTexture,SCREEN_UV).xyz;
 	normal = normalize(normal * 2.0 - 1.0);
 
+	vec3 randomVec = normalize(vec3(noiseVec,0.0));
+	vec3 tangent = normalize(randomVec - normal * dot(randomVec,normal));	
+	vec3 bitangent = cross(normal,tangent);
+	mat3 TBN = mat3(tangent,bitangent,normal);
+
 	for(int i = 0; i < SAMPLE_COUNT; i++){
 
-		vec3 sampleOffset = normalize(samples[i]) * radius;
-		sampleOffset.xy = rotationMatrix * sampleOffset.xy;
+		//orient kernal to surface normal
+		vec3 sampleOffset =	TBN * samples[i];
 
 		//position near our fragment
-		vec3 samplePos = fragmentPos + sampleOffset;
+		vec3 samplePos = fragmentPos + sampleOffset * radius;
 
 		//go back to clipspace
 		vec4 clipPos = camera.PROJECTION_MATRIX * vec4(samplePos, 1.0);
@@ -177,6 +175,7 @@ void main(){
     occlusion /= float(SAMPLE_COUNT);
 
 	float ao = 1.0 - occlusion;
+	ao = pow(ao,2);
 
     imageStore(
         aoImage,
