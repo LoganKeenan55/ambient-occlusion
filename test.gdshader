@@ -24,7 +24,7 @@ void fragment() {
 	
 	//perspective divide
 	view /= view.w;
-	
+	 
 
 	//in view space camera is always at 0,0,0
 
