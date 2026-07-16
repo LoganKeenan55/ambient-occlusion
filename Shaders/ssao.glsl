@@ -116,7 +116,8 @@ void main(){
 
 	float occlusion = 0.0;
 
-	const float radius = 0.1;
+	const float radius = 0.3;
+	const float bias = 0.05;
 
 	ivec2 texel = ivec2(mod(floor(SCREEN_UV * push_constants.VIEWPORT_SIZE), 4.0));
     vec2 noiseVec = texelFetch(noiseTexture,texel,0).xy;
@@ -168,7 +169,7 @@ void main(){
 		);
 
 		//is the real geometry closer to the camera than my imaginary sample? If yes sample is blocked occlusion = 1;
-		occlusion += (sampleView.z > samplePos.z ? 1.0 : 0.0) * rangeCheck;
+		occlusion += (sampleView.z > samplePos.z? 1.0 : 0.0) * rangeCheck;
         
 	}
 
