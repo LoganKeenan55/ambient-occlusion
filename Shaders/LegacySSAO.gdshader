@@ -68,7 +68,7 @@ void fragment() {
 
 		vec3 sample = normalize(samples[i]) * radius;
 
-		//sample.xy = rotationMatrix * sample.xy;
+		sample.xy = rotationMatrix * sample.xy;
 
 		//position near our fragment
 		vec3 samplePos = fragmentPos + sample ;

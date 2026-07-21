@@ -17,7 +17,7 @@ public partial class Main : Node3D
 
     public override void _Ready(){
        worldEnvironment = GetNode<WorldEnvironment>("WorldEnvironment");
-	   createRandomPoints(64);
+	   createRandomPoints(32);
     }
 
     public override void _Process(double _delta){
