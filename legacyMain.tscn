@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://br3qu86pjrawa"]
+
+[ext_resource type="Script" uid="uid://cotawaid4ctp3" path="res://Scripts/LegacyMain.cs" id="1_4ui2x"]
+[ext_resource type="Script" uid="uid://be17e2fur6dm1" path="res://Scripts/Camera.cs" id="2_nw1ph"]
+[ext_resource type="Shader" uid="uid://pws71eusx7wi" path="res://Shaders/LegacySSAO.gdshader" id="3_41l2a"]
+[ext_resource type="PackedScene" uid="uid://bajvs7q5b3xud" path="res://Scene/scene.glb" id="4_sc7d2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1upx"]
+render_priority = 0
+shader = ExtResource("3_41l2a")
+shader_parameter/mode = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_wfihs"]
+material = SubResource("ShaderMaterial_m1upx")
+
+[sub_resource type="Environment" id="Environment_4ui2x"]
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+ssao_radius = 0.01
+ssao_intensity = 0.0
+ssao_detail = 0.0
+ssao_horizon = 0.0
+ssao_sharpness = 0.0
+
+[node name="LegacyMain" type="Node3D" unique_id=1108985001]
+script = ExtResource("1_4ui2x")
+mode = 2
+
+[node name="Camera" type="Camera3D" parent="." unique_id=1499403122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2690318, 3.4216237, -3.8194275)
+script = ExtResource("2_nw1ph")
+
+[node name="SSAO" type="MeshInstance3D" parent="Camera" unique_id=2090614771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.36794543)
+mesh = SubResource("QuadMesh_wfihs")
+
+[node name="scene" parent="." unique_id=1290402355 instance=ExtResource("4_sc7d2")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=755489515]
+environment = SubResource("Environment_4ui2x")
