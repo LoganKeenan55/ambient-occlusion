@@ -17,7 +17,7 @@ public partial class Main : Node3D
 
     public override void _Ready(){
        worldEnvironment = GetNode<WorldEnvironment>("WorldEnvironment");
-	   createRandomPoints(32);
+	   createRandomPoints(64);
     }
 
     public override void _Process(double _delta){
@@ -51,7 +51,7 @@ public partial class Main : Node3D
 		for(int i = 0; i < count; i++){
 			Vector3 normalized = points[i].Normalized();
 			float scale = Mathf.Lerp(0.1f, 1.0f, (float)i/count*i/count);
-			points[i] *= scale;
+			points[i] = normalized * scale;
 			points[i] = new Vector3(
             (float)Math.Round(points[i].X, 2),
             (float)Math.Round(points[i].Y, 2),
