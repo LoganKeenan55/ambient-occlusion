@@ -4,8 +4,9 @@
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 layout(push_constant) uniform PushConstants {
-    vec2 VIEWPORT_SIZE;
-    vec2 padding;
+	vec2 VIEWPORT_SIZE;
+	float mode;
+	float padding;
 } push_constants;
 
 layout(rgba16f, set = 0, binding = 0) uniform image2D colorImage;
@@ -19,7 +20,7 @@ void main() {
         pixel.y >= int(push_constants.VIEWPORT_SIZE.y))
         return;
 
-    int mode = int(push_constants.padding.x);
+    int mode = int(push_constants.mode);
 
     vec2 uv = (vec2(pixel) + vec2(0.5)) / push_constants.VIEWPORT_SIZE;
     vec2 texel_size = 1.0 / push_constants.VIEWPORT_SIZE;

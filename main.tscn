@@ -47,6 +47,7 @@ effect_callback_type = 4
 needs_motion_vectors = false
 needs_normal_roughness = true
 script = ExtResource("3_7mycd")
+radius = 0.30000000000000004
 
 [sub_resource type="Compositor" id="Compositor_5vw27"]
 compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_rmhsj")])
@@ -54,6 +55,7 @@ compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_rmhs
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
 mode = 2
+radius = 2.5
 
 [node name="Camera" type="Camera3D" parent="." unique_id=741220469]
 script = ExtResource("3_1bvp3")

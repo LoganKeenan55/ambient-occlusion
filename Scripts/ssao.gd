@@ -1,4 +1,4 @@
-#@tool
+@tool
 extends CompositorEffect
 class_name SSAOEffect
 
@@ -24,6 +24,8 @@ var noise_texture: ImageTexture
 var rd_noise_texture: RID
 
 var ao_sampler: RID
+
+@export_range(0.1,10,0.1) var radius: float;
 
 func _init():
 	effect_callback_type = EFFECT_CALLBACK_TYPE_POST_TRANSPARENT
@@ -136,7 +138,7 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 	var push_constants := PackedFloat32Array([
 		size.x,
 		size.y,
-		0.0,
+		radius,
 		0.0
 	]).to_byte_array()
 

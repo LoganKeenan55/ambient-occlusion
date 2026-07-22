@@ -14,10 +14,13 @@ public partial class Main : Node3D
 	ImageTexture ssaoNoiseTexture;
 	[Export]
 	private int mode;
+	[Export(PropertyHint.Range, "0.1,10,0.1")]
+	private float radius = 0.3f;
 
     public override void _Ready(){
        worldEnvironment = GetNode<WorldEnvironment>("WorldEnvironment");
-	   createRandomPoints(64);
+	   worldEnvironment.Compositor.CompositorEffects[0].Set("radius",radius);
+	   //createRandomPoints(64);
     }
 
     public override void _Process(double _delta){
@@ -34,6 +37,8 @@ public partial class Main : Node3D
 		if (Input.IsActionJustPressed("3")){
 			worldEnvironment.Compositor.CompositorEffects[0].Set("renderMode",2);
 		}
+
+		
     }
 
 	public void createRandomPoints(int count){

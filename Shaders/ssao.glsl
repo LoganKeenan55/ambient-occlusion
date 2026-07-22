@@ -5,7 +5,8 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 layout(push_constant) uniform PushConstants {
 	vec2 VIEWPORT_SIZE;
-	vec2 padding;
+	float radius;
+	float padding;
 } push_constants;
 
 layout(std140, set = 0, binding = 3) uniform CameraData {
@@ -116,8 +117,6 @@ void main(){
 
 	float occlusion = 0.0;
 
-	const float radius = 0.3;
-
 	ivec2 texel = ivec2(mod(floor(SCREEN_UV * push_constants.VIEWPORT_SIZE), 4.0));
     vec2 noiseVec = texelFetch(noiseTexture,texel,0).xy;
 
@@ -135,7 +134,7 @@ void main(){
 		vec3 sampleOffset =	TBN * samples[i];
 
 		//position near our fragment
-		vec3 samplePos = fragmentPos + sampleOffset * radius;
+		vec3 samplePos = fragmentPos + sampleOffset * push_constants.radius;
 
 		//go back to clipspace
 		vec4 clipPos = camera.PROJECTION_MATRIX * vec4(samplePos, 1.0);
@@ -165,7 +164,7 @@ void main(){
 		float rangeCheck = smoothstep(
 			0.0,
 			1.0,
-			radius / abs(fragmentPos.z - sampleView.z)
+			push_constants.radius / abs(fragmentPos.z - sampleView.z)
 		);
 
 		//is the real geometry closer to the camera than my imaginary sample? If yes sample is blocked occlusion = 1;
