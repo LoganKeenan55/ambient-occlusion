@@ -54,8 +54,6 @@ compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_rmhs
 
 [node name="World" type="Node3D" unique_id=2107548826]
 script = ExtResource("1_0xm2m")
-mode = 2
-radius = 2.5
 
 [node name="Camera" type="Camera3D" parent="." unique_id=741220469]
 script = ExtResource("3_1bvp3")

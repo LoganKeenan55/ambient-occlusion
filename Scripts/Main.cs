@@ -9,17 +9,15 @@ public partial class Main : Node3D
 	private ShaderMaterial material;
 	private MeshInstance3D shaderOverlay;
 	private WorldEnvironment worldEnvironment;
+	private float radius;
+	private int mode;
 
 	Image ssaoNoiseImage = Image.CreateEmpty(4, 4, false, Image.Format.Rgb8);
 	ImageTexture ssaoNoiseTexture;
-	[Export]
-	private int mode;
-	[Export(PropertyHint.Range, "0.1,10,0.1")]
-	private float radius = 0.3f;
 
     public override void _Ready(){
        worldEnvironment = GetNode<WorldEnvironment>("WorldEnvironment");
-	   worldEnvironment.Compositor.CompositorEffects[0].Set("radius",radius);
+	   //worldEnvironment.Compositor.CompositorEffects[0].Set("radius",radius);
 	   //createRandomPoints(64);
     }
 
