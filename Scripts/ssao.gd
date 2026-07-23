@@ -1,13 +1,17 @@
 @tool
 extends CompositorEffect
-class_name SSAOEffect
+class_name AOEffect
 
 @export_enum("Flat", "AO Only", "Composited") var renderMode: int = 2
-
+@export_range(0.1,10,0.1) var radius: float = 0.3
+@export_enum("SSAO","HBAO") var AOVersion: int = 0;
 var rd: RenderingDevice
 
-var shader: RID
-var pipeline: RID
+var ssao_shader: RID
+var ssao_pipeline: RID
+
+var hbao_shader: RID
+var hbao_pipeline: RID
 
 var blur_shader: RID
 var blur_pipeline: RID
@@ -25,29 +29,25 @@ var rd_noise_texture: RID
 
 var ao_sampler: RID
 
-@export_range(0.1,10,0.1) var radius: float;
+
 
 func _init():
 	effect_callback_type = EFFECT_CALLBACK_TYPE_POST_TRANSPARENT
 
 	rd = RenderingServer.get_rendering_device()
 
-	var shader_file = preload("res://Shaders/ssao.glsl")
-	var shader_spirv = shader_file.get_spirv()
 
-	shader = rd.shader_create_from_spirv(shader_spirv)
-	pipeline = rd.compute_pipeline_create(shader)
+	var ssao_file = preload("res://Shaders/ssao.glsl")
+	ssao_shader = rd.shader_create_from_spirv(ssao_file.get_spirv())
+	ssao_pipeline = rd.compute_pipeline_create(ssao_shader)
 
-	var blur_file = load("res://Shaders/bilateralBlur.glsl")
+	var hbao_file = preload("res://Shaders/hbao.glsl")
+	hbao_shader = rd.shader_create_from_spirv(hbao_file.get_spirv())
+	hbao_pipeline = rd.compute_pipeline_create(hbao_shader)
 
-	var blur_spirv = blur_file.get_spirv()
-
-	blur_shader = rd.shader_create_from_spirv(blur_spirv)
-
-
+	var blur_file = preload("res://Shaders/bilateralBlur.glsl")
+	blur_shader = rd.shader_create_from_spirv(blur_file.get_spirv())
 	blur_pipeline = rd.compute_pipeline_create(blur_shader)
-	print("blur shader valid =", blur_shader.is_valid())
-	print("blur pipeline valid =", blur_pipeline.is_valid())
 
 	depth_sampler = rd.sampler_create(RDSamplerState.new())
 	noise_sampler = rd.sampler_create(RDSamplerState.new())
@@ -61,11 +61,17 @@ func _notification(what):
 	if what != NOTIFICATION_PREDELETE:
 		return
 
-	if shader.is_valid():
-		rd.free_rid(shader)
+	if ssao_shader.is_valid():
+		rd.free_rid(ssao_shader)
 
-	if pipeline.is_valid():
-		rd.free_rid(pipeline)
+	if ssao_pipeline.is_valid():
+		rd.free_rid(ssao_pipeline)
+
+	if hbao_shader.is_valid():
+		rd.free_rid(hbao_shader)
+
+	if hbao_pipeline.is_valid():
+		rd.free_rid(hbao_pipeline)
 
 	if depth_sampler.is_valid():
 		rd.free_rid(depth_sampler)
@@ -185,12 +191,22 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 			camera_rd_uniform,
 			normal_uniform
 		]
+		var active_shader: RID
+		var active_pipeline: RID
+
+		match AOVersion:
+			0:
+				active_shader = ssao_shader
+				active_pipeline = ssao_pipeline
+			1:
+				active_shader = hbao_shader
+				active_pipeline = hbao_pipeline
+
 		var uniform_set := rd.uniform_set_create(
 			bindings,
-			shader,
+			active_shader,
 			0
 		)
-
 		var groups := Vector3i(
 			ceili(size.x / 8.0),
 			ceili(size.y / 8.0),
@@ -199,10 +215,7 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 
 		var compute_list := rd.compute_list_begin()
 
-		rd.compute_list_bind_compute_pipeline(
-			compute_list,
-			pipeline
-		)
+		rd.compute_list_bind_compute_pipeline(compute_list, active_pipeline)
 
 		rd.compute_list_bind_uniform_set(
 			compute_list,

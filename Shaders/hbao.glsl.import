@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://p70fhcftc0t8"
+path="res://.godot/imported/hbao.glsl-937028320760f288d52a23776736cffc.res"
+
+[deps]
+
+source_file="res://Shaders/hbao.glsl"
+dest_files=["res://.godot/imported/hbao.glsl-937028320760f288d52a23776736cffc.res"]
+
+[params]
+
