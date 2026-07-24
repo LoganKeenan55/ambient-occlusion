@@ -18,7 +18,7 @@ public partial class Main : Node3D
     public override void _Ready(){
        worldEnvironment = GetNode<WorldEnvironment>("WorldEnvironment");
 	   //worldEnvironment.Compositor.CompositorEffects[0].Set("radius",radius);
-	   //createRandomPoints(64);
+	   createRandomPoints(16);
     }
 
     public override void _Process(double _delta){

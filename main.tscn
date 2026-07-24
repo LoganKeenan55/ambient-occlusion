@@ -32,12 +32,12 @@ blend_shape_mode = 0
 [sub_resource type="Environment" id="Environment_m1upx"]
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ssao_enabled = true
-ssao_radius = 0.01
-ssao_intensity = 0.0
-ssao_detail = 0.0
-ssao_horizon = 0.0
-ssao_sharpness = 0.0
+ssao_radius = 0.3
+ssao_intensity = 2.33
+ssao_power = 4.242641
+ssao_detail = 2.95
+ssao_horizon = 0.14
+ssao_light_affect = 0.05
 
 [sub_resource type="CompositorEffect" id="CompositorEffect_rmhsj"]
 resource_local_to_scene = false

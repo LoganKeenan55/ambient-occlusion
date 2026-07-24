@@ -1,5 +1,5 @@
 //HBAO implementation based on Scanberg's implementation of Nvidia directX implementation
-
+//~1.45ms cost on rtx 2070
 #[compute]
 #version 450
 
@@ -14,8 +14,8 @@ layout(push_constant) uniform PushConstants {
 const float AO_INTENSITY = 2.0;
 const float AO_TAN_BIAS = 0.57735026919; //tan(30 deg)
 const float AO_MAX_RADIUS_PIXELS = 50.0;
-const int AO_NUM_DIRECTIONS = 24;
-const int AO_NUM_STEPS = 16;
+const int AO_NUM_DIRECTIONS = 8;
+const int AO_NUM_STEPS = 6;
 
 layout(std140, set = 0, binding = 3) uniform CameraData {
 	mat4 PROJECTION_MATRIX;
@@ -41,8 +41,7 @@ float NegInvR2;
 vec2 FocalLen;
 
 
-vec3 GetViewPos(vec2 uv)
-{
+vec3 GetViewPos(vec2 uv){
 	float depth = texture(depthTexture, uv).r;
 	vec4 clip = vec4(uv * 2.0 - 1.0, depth, 1.0);
 	vec4 view = camera.INV_PROJECTION_MATRIX * clip;
@@ -50,50 +49,41 @@ vec3 GetViewPos(vec2 uv)
 	return view.xyz;
 }
 
-float TanToSin(float x)
-{
+float TanToSin(float x){
 	return x * inversesqrt(x * x + 1.0);
 }
 
-float InvLength(vec2 v)
-{
+float InvLength(vec2 v){
 	return inversesqrt(dot(v, v));
 }
 
-float BiasedTangent(vec3 v)
-{
+float BiasedTangent(vec3 v){
 	return v.z * InvLength(v.xy) + AO_TAN_BIAS;
 }
 
-float Tangent(vec3 P, vec3 S)
-{
+float Tangent(vec3 P, vec3 S){
 	return -(P.z - S.z) * InvLength(S.xy - P.xy);
 }
 
-float Length2(vec3 v)
-{
+float Length2(vec3 v){
 	return dot(v, v);
 }
 
-vec3 MinDiff(vec3 P, vec3 Pr, vec3 Pl)
-{
+vec3 MinDiff(vec3 P, vec3 Pr, vec3 Pl){
 	vec3 V1 = Pr - P;
 	vec3 V2 = P - Pl;
 	return (Length2(V1) < Length2(V2)) ? V1 : V2;
 }
 
-vec2 SnapUVOffset(vec2 uv)
-{
+vec2 SnapUVOffset(vec2 uv){
 	return round(uv * AORes) * InvAORes;
 }
 
-float Falloff(float d2)
-{
+float Falloff(float d2){
 	return d2 * NegInvR2 + 1.0;
 }
 
-float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv, float randstep, float numSamples)
-{
+float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv, float randstep, float numSamples){
 	float ao = 0.0;
 
 	//offset the first sample with noise
@@ -105,15 +95,13 @@ float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv
 	float tanH = BiasedTangent(T);
 	float sinH = TanToSin(tanH);
 
-	for (float s = 1.0; s <= numSamples; s += 1.0)
-	{
+	for (float s = 1.0; s <= numSamples; s += 1.0){
 		uv += deltaUV;
 		vec3 S = GetViewPos(uv);
 		float tanS = Tangent(P, S);
 		float d2 = Length2(S - P);
 
-		if (d2 < R2 && tanS > tanH)
-		{
+		if (d2 < R2 && tanS > tanH){
 			float sinS = TanToSin(tanS);
 			ao += Falloff(d2) * (sinS - sinH);
 
@@ -125,21 +113,18 @@ float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv
 	return ao;
 }
 
-vec2 RotateDirections(vec2 dir, vec2 cosSin)
-{
+vec2 RotateDirections(vec2 dir, vec2 cosSin){
 	return vec2(dir.x * cosSin.x - dir.y * cosSin.y,
 	            dir.x * cosSin.y + dir.y * cosSin.x);
 }
 
-void ComputeSteps(inout vec2 stepSizeUv, inout float numSteps, float rayRadiusPix, float rand)
-{
+void ComputeSteps(inout vec2 stepSizeUv, inout float numSteps, float rayRadiusPix, float rand){
 	numSteps = min(float(AO_NUM_STEPS), rayRadiusPix);
 
 	float stepSizePix = rayRadiusPix / (numSteps + 1.0);
 
 	float maxNumSteps = AO_MAX_RADIUS_PIXELS / stepSizePix;
-	if (maxNumSteps < numSteps)
-	{
+	if (maxNumSteps < numSteps){
 		numSteps = floor(maxNumSteps + rand);
 		numSteps = max(numSteps, 1.0);
 		stepSizePix = AO_MAX_RADIUS_PIXELS / numSteps;
@@ -186,8 +171,7 @@ void main(){
 	float ao = 1.0;
 
 	//skip shading if the hemisphere doesn't cover pixel
-	if (rayRadiusPix > 1.0)
-	{
+	if (rayRadiusPix > 1.0){
 		ao = 0.0;
 		float numSteps;
 		vec2 stepSizeUV;
@@ -196,9 +180,8 @@ void main(){
 
 		float alpha = 2.0 * PI / float(AO_NUM_DIRECTIONS);
 
-		for (int d = 0; d < AO_NUM_DIRECTIONS; d++)
-		{
-			float theta = alpha * float(d);
+		for (int i = 0; i < AO_NUM_DIRECTIONS; i++){
+			float theta = alpha * float(i);
 
 			vec2 dir = RotateDirections(vec2(cos(theta), sin(theta)), randTex.xy);
 			vec2 deltaUV = dir * stepSizeUV;
