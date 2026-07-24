@@ -1,3 +1,4 @@
+//Crytek SSAO 
 #[compute]
 #version 450
 
@@ -40,8 +41,6 @@ void main(){
 
 	//perspective divide
 	view /= view.w;
-
-	//in view space camera is always at 0,0,0
 
 	const int SAMPLE_COUNT = 64;
 
@@ -110,7 +109,6 @@ void main(){
 		vec3(0.17,0.92,0.64),
 		vec3(0.24,0.12,0.86),
 		vec3(-0.3,-0.96,0.87)
-
 	);
 
 	vec3 fragmentPos = view.xyz;
@@ -143,8 +141,6 @@ void main(){
 
         vec2 offsetUV = clipPos.xy * invW;
         offsetUV = offsetUV * 0.5 + 0.5;
-
-    
 
 		//get depth of sample
 		float sampleDepth = texture(depthTexture, offsetUV).r;
