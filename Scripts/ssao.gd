@@ -4,7 +4,7 @@ class_name AOEffect
 
 @export_enum("Flat", "AO Only", "Composited") var renderMode: int = 2
 @export_range(0.1,10,0.1) var radius: float = 0.3
-@export_enum("SSAO","HBAO","SAO") var AOVersion: int = 0;
+@export_enum("SSAO","HBAO","SAO","GTAO") var AOVersion: int = 0;
 var rd: RenderingDevice
 
 var ssao_shader: RID
@@ -15,6 +15,9 @@ var hbao_pipeline: RID
 
 var sao_shader: RID
 var sao_pipeline: RID
+
+var gtao_shader: RID
+var gtao_pipeline: RID
 
 var blur_shader: RID
 var blur_pipeline: RID
@@ -44,13 +47,17 @@ func _init():
 	ssao_shader = rd.shader_create_from_spirv(ssao_file.get_spirv())
 	ssao_pipeline = rd.compute_pipeline_create(ssao_shader)
 	
+	var hbao_file = preload("res://Shaders/hbao.glsl")
+	hbao_shader = rd.shader_create_from_spirv(hbao_file.get_spirv())
+	hbao_pipeline = rd.compute_pipeline_create(hbao_shader)
+
 	var sao_file = preload("res://Shaders/sao.glsl")
 	sao_shader = rd.shader_create_from_spirv(sao_file.get_spirv())
 	sao_pipeline = rd.compute_pipeline_create(sao_shader)
 
-	var hbao_file = preload("res://Shaders/hbao.glsl")
-	hbao_shader = rd.shader_create_from_spirv(hbao_file.get_spirv())
-	hbao_pipeline = rd.compute_pipeline_create(hbao_shader)
+	var gtao_file = preload("res://Shaders/gtao.glsl")
+	gtao_shader = rd.shader_create_from_spirv(gtao_file.get_spirv())
+	gtao_pipeline = rd.compute_pipeline_create(gtao_shader)
 
 	var blur_file = preload("res://Shaders/bilateralBlur.glsl")
 	blur_shader = rd.shader_create_from_spirv(blur_file.get_spirv())
@@ -74,17 +81,23 @@ func _notification(what):
 	if ssao_pipeline.is_valid():
 		rd.free_rid(ssao_pipeline)
 
+	if hbao_shader.is_valid():
+		rd.free_rid(hbao_shader)
+
+	if hbao_pipeline.is_valid():
+		rd.free_rid(hbao_pipeline)
+
 	if sao_shader.is_valid():
 		rd.free_rid(sao_shader)
 
 	if sao_pipeline.is_valid():
 		rd.free_rid(sao_pipeline)
 
-	if hbao_shader.is_valid():
-		rd.free_rid(hbao_shader)
+	if gtao_shader.is_valid():
+		rd.free_rid(gtao_shader)
 
-	if hbao_pipeline.is_valid():
-		rd.free_rid(hbao_pipeline)
+	if gtao_pipeline.is_valid():
+		rd.free_rid(gtao_pipeline)
 
 	if depth_sampler.is_valid():
 		rd.free_rid(depth_sampler)
@@ -217,6 +230,9 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 			2:
 				active_shader = sao_shader
 				active_pipeline = sao_pipeline
+			3:
+				active_shader = gtao_shader
+				active_pipeline = gtao_pipeline
 
 		var uniform_set := rd.uniform_set_create(
 			bindings,

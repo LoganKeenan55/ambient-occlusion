@@ -28,14 +28,14 @@ void main() {
     vec4 color = imageLoad(colorImage, pixel);
 
     if (mode == 0) {
-        // Flat: leave color untouched
+        //flat
         return;
     }
 
     float centerDepth = texture(depthTexture, uv).r;
 
     const int BLUR_RADIUS = 2;
-    const float depthThreshold = 0.001;
+    const float depthThreshold = 0.01;
 
     float aoSum = 0.0;
     float weightSum = 0.0;
