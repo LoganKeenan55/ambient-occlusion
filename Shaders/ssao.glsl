@@ -24,6 +24,21 @@ layout(set = 0, binding = 2) uniform sampler2D noiseTexture;
 
 layout(set = 0, binding = 4) uniform sampler2D normalTexture;
 
+vec4 normal_roughness_compatibility(vec4 p_normal_roughness) {
+    float roughness = p_normal_roughness.w;
+
+    if (roughness > 0.5) {
+        roughness = 1.0 - roughness;
+    }
+
+    roughness /= (127.0 / 255.0);
+
+    return vec4(
+        normalize(p_normal_roughness.xyz * 2.0 - 1.0) * 0.5 + 0.5,
+        roughness
+    );
+}
+
 void main(){
 	ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
 
@@ -43,7 +58,7 @@ void main(){
 	//perspective divide
 	view /= view.w;
 
-	const int SAMPLE_COUNT = 64;
+	const int SAMPLE_COUNT = 16; //64
 
 	const vec3 samples[SAMPLE_COUNT] = vec3[](
 		vec3(-0,-0.05,0.09),
@@ -61,8 +76,9 @@ void main(){
 		vec3(0.12,0.05,0.01),
 		vec3(-0.08,-0.08,0.08),
 		vec3(0.06,0.11,0.06),
-		vec3(-0.02,0.14,0.04),
-		vec3(-0.14,0.07,0.03),
+		vec3(-0.02,0.14,0.04)
+	);
+		/*vec3(-0.14,0.07,0.03),
 		vec3(-0.14,0.01,0.08),
 		vec3(-0.08,-0.15,0.04),
 		vec3(0.01,-0.14,0.11),
@@ -109,9 +125,8 @@ void main(){
 		vec3(0.01,-0.58,0.68),
 		vec3(0.32,0.83,0.24),
 		vec3(-0.19,-0.8,0.47),
-		vec3(-0.07,0.94,0.22)
+		vec3(-0.07,0.94,0.22)*/
 
-	);
 
 	vec3 fragmentPos = view.xyz;
 
@@ -120,8 +135,10 @@ void main(){
 	ivec2 texel = ivec2(mod(floor(SCREEN_UV * push_constants.VIEWPORT_SIZE), 4.0));
     vec2 noiseVec = texelFetch(noiseTexture,texel,0).xy;
 
-	vec3 normal = texture(normalTexture,SCREEN_UV).xyz;
-	normal = normalize(normal * 2.0 - 1.0);
+	vec4 nr = texture(normalTexture, SCREEN_UV);
+	nr = normal_roughness_compatibility(nr);
+
+	vec3 normal = normalize(nr.xyz * 2.0 - 1.0);
 
 	vec3 randomVec = normalize(vec3(noiseVec,0.0));
 	vec3 tangent = normalize(randomVec - normal * dot(randomVec,normal));	
@@ -158,6 +175,9 @@ void main(){
 
 		//NOW we have sampleView.xyz which is geometry at that sampled screen location
 
+		vec3 dir = normalize(sampleView.xyz - fragmentPos);
+		float NdotD = max(dot(normal, dir), 0.0);
+
 		//distance from fragment we are shading and geometry
 		float rangeCheck = smoothstep(
 			0.0,
@@ -166,7 +186,7 @@ void main(){
 		);
 
 		//is the real geometry closer to the camera than my imaginary sample? If yes sample is blocked occlusion = 1;
-		occlusion += (sampleView.z > samplePos.z? 1.0 : 0.0) * rangeCheck;
+		occlusion += (sampleView.z > samplePos.z ? 1.0 : 0.0) * rangeCheck * NdotD;
         
 	}
 
