@@ -14,8 +14,8 @@ layout(push_constant) uniform PushConstants {
 const float AO_INTENSITY = 2.0;
 const float AO_TAN_BIAS = 0.57735026919; //tan(30 deg)
 const float AO_MAX_RADIUS_PIXELS = 50.0;
-const int AO_NUM_DIRECTIONS = 8;
-const int AO_NUM_STEPS = 6;
+const int AO_NUM_DIRECTIONS = 16;
+const int AO_NUM_STEPS = 12;
 
 layout(std140, set = 0, binding = 3) uniform CameraData {
 	mat4 PROJECTION_MATRIX;
@@ -49,61 +49,34 @@ vec3 GetViewPos(vec2 uv){
 	return view.xyz;
 }
 
-float TanToSin(float x){
-	return x * inversesqrt(x * x + 1.0);
-}
-
-float InvLength(vec2 v){
-	return inversesqrt(dot(v, v));
-}
-
-float BiasedTangent(vec3 v){
-	return v.z * InvLength(v.xy) + AO_TAN_BIAS;
-}
-
-float Tangent(vec3 P, vec3 S){
-	return -(P.z - S.z) * InvLength(S.xy - P.xy);
-}
-
-float Length2(vec3 v){
-	return dot(v, v);
-}
-
 vec3 MinDiff(vec3 P, vec3 Pr, vec3 Pl){
 	vec3 V1 = Pr - P;
 	vec3 V2 = P - Pl;
-	return (Length2(V1) < Length2(V2)) ? V1 : V2;
-}
-
-vec2 SnapUVOffset(vec2 uv){
-	return round(uv * AORes) * InvAORes;
-}
-
-float Falloff(float d2){
-	return d2 * NegInvR2 + 1.0;
+	return (dot(V1, V1) < dot(V2, V2)) ? V1 : V2;
 }
 
 float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv, float randstep, float numSamples){
 	float ao = 0.0;
 
 	//offset the first sample with noise
-	vec2 uv = originUV + SnapUVOffset(randstep * deltaUV);
-	deltaUV = SnapUVOffset(deltaUV);
+	vec2 uv = originUV + round((randstep * deltaUV) * AORes) * InvAORes;
+	deltaUV = round(deltaUV * AORes) * InvAORes;
 
 	vec3 T = deltaUV.x * dPdu + deltaUV.y * dPdv;
 
-	float tanH = BiasedTangent(T);
-	float sinH = TanToSin(tanH);
+	float tanH = T.z * inversesqrt(dot(T.xy, T.xy)) + AO_TAN_BIAS;
+	float sinH = tanH * inversesqrt(tanH * tanH + 1.0);
 
 	for (float s = 1.0; s <= numSamples; s += 1.0){
 		uv += deltaUV;
 		vec3 S = GetViewPos(uv);
-		float tanS = Tangent(P, S);
-		float d2 = Length2(S - P);
+
+		float tanS = -(P.z - S.z) * inversesqrt(dot(S.xy - P.xy, S.xy - P.xy));
+		float d2 = dot(S - P, S - P);
 
 		if (d2 < R2 && tanS > tanH){
-			float sinS = TanToSin(tanS);
-			ao += Falloff(d2) * (sinS - sinH);
+			float sinS = tanS * inversesqrt(tanS * tanS + 1.0);
+			ao += (d2 * NegInvR2 + 1.0) * (sinS - sinH);
 
 			tanH = tanS;
 			sinH = sinS;
@@ -111,11 +84,6 @@ float HorizonOcclusion(vec2 originUV, vec2 deltaUV, vec3 P, vec3 dPdu, vec3 dPdv
 	}
 
 	return ao;
-}
-
-vec2 RotateDirections(vec2 dir, vec2 cosSin){
-	return vec2(dir.x * cosSin.x - dir.y * cosSin.y,
-	            dir.x * cosSin.y + dir.y * cosSin.x);
 }
 
 void ComputeSteps(inout vec2 stepSizeUv, inout float numSteps, float rayRadiusPix, float rand){
@@ -183,7 +151,12 @@ void main(){
 		for (int i = 0; i < AO_NUM_DIRECTIONS; i++){
 			float theta = alpha * float(i);
 
-			vec2 dir = RotateDirections(vec2(cos(theta), sin(theta)), randTex.xy);
+			//rotateDirections(vec2(cos(theta), sin(theta)), randTex.xy)
+			vec2 baseDir = vec2(cos(theta), sin(theta));
+			vec2 dir = vec2(
+				baseDir.x * randTex.x - baseDir.y * randTex.y,
+				baseDir.x * randTex.y + baseDir.y * randTex.x
+			);
 			vec2 deltaUV = dir * stepSizeUV;
 
 			ao += HorizonOcclusion(SCREEN_UV, deltaUV, P, dPdu, dPdv, randTex.z, numSteps);

@@ -4,7 +4,7 @@ class_name AOEffect
 
 @export_enum("Flat", "AO Only", "Composited") var renderMode: int = 2
 @export_range(0.1,10,0.1) var radius: float = 0.3
-@export_enum("SSAO","HBAO") var AOVersion: int = 0;
+@export_enum("SSAO","HBAO","SAO") var AOVersion: int = 0;
 var rd: RenderingDevice
 
 var ssao_shader: RID
@@ -12,6 +12,9 @@ var ssao_pipeline: RID
 
 var hbao_shader: RID
 var hbao_pipeline: RID
+
+var sao_shader: RID
+var sao_pipeline: RID
 
 var blur_shader: RID
 var blur_pipeline: RID
@@ -40,6 +43,10 @@ func _init():
 	var ssao_file = preload("res://Shaders/ssao.glsl")
 	ssao_shader = rd.shader_create_from_spirv(ssao_file.get_spirv())
 	ssao_pipeline = rd.compute_pipeline_create(ssao_shader)
+	
+	var sao_file = preload("res://Shaders/sao.glsl")
+	sao_shader = rd.shader_create_from_spirv(sao_file.get_spirv())
+	sao_pipeline = rd.compute_pipeline_create(sao_shader)
 
 	var hbao_file = preload("res://Shaders/hbao.glsl")
 	hbao_shader = rd.shader_create_from_spirv(hbao_file.get_spirv())
@@ -66,6 +73,12 @@ func _notification(what):
 
 	if ssao_pipeline.is_valid():
 		rd.free_rid(ssao_pipeline)
+
+	if sao_shader.is_valid():
+		rd.free_rid(sao_shader)
+
+	if sao_pipeline.is_valid():
+		rd.free_rid(sao_pipeline)
 
 	if hbao_shader.is_valid():
 		rd.free_rid(hbao_shader)
@@ -201,6 +214,9 @@ func _render_callback(_callback_type:int, render_data:RenderData):
 			1:
 				active_shader = hbao_shader
 				active_pipeline = hbao_pipeline
+			2:
+				active_shader = sao_shader
+				active_pipeline = sao_pipeline
 
 		var uniform_set := rd.uniform_set_create(
 			bindings,
