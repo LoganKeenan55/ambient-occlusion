@@ -50,10 +50,10 @@ position = Vector2(-124, -370)
 position = Vector2(164, 464)
 
 [node name="Sample6" parent="Samples" unique_id=686504589 instance=ExtResource("3_1s21y")]
-position = Vector2(-140, 487)
+position = Vector2(-147.01492, 561.19403)
 
 [node name="Sample7" parent="Samples" unique_id=762157191 instance=ExtResource("3_1s21y")]
-position = Vector2(-463, -109)
+position = Vector2(374.62692, 348.50748)
 
 [node name="Sample8" parent="Samples" unique_id=1837949227 instance=ExtResource("3_1s21y")]
 position = Vector2(521, -220)
@@ -68,7 +68,7 @@ position = Vector2(-522, 26)
 position = Vector2(-34, -70)
 
 [node name="Sample12" parent="Samples" unique_id=842327745 instance=ExtResource("3_1s21y")]
-position = Vector2(71.00003, 289)
+position = Vector2(201.49252, 528.35815)
 
 [node name="Sample13" parent="Samples" unique_id=501839142 instance=ExtResource("3_1s21y")]
 position = Vector2(-179, 183)
@@ -92,7 +92,7 @@ position = Vector2(332, -526)
 position = Vector2(-240, -209)
 
 [node name="Sample20" parent="Samples" unique_id=979251763 instance=ExtResource("3_1s21y")]
-position = Vector2(-284, 335)
+position = Vector2(-382.83582, 405.22385)
 
 [node name="Sample21" parent="Samples" unique_id=1833985211 instance=ExtResource("3_1s21y")]
 position = Vector2(-182, -584)
@@ -104,6 +104,7 @@ scale = Vector2(351.185, 252.96)
 texture = ExtResource("5_fslp3")
 
 [node name="Area2D" type="Area2D" parent="Wall" unique_id=1042563948]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Area2D" unique_id=1618360906]
 visible = false
