@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://odruvbr1p0pb"]
+
+[ext_resource type="Script" uid="uid://cbym8mbq1njt1" path="res://2D/Ssao2d.cs" id="1_glrmx"]
+[ext_resource type="Texture2D" uid="uid://f818jiwypogh" path="res://2D/circle2.png" id="2_onngf"]
+[ext_resource type="PackedScene" uid="uid://cje1byg2yddq0" path="res://2D/sample.tscn" id="3_1s21y"]
+[ext_resource type="Texture2D" uid="uid://dvv2ainxg02p2" path="res://2D/sqaure.png" id="3_onngf"]
+[ext_resource type="Texture2D" uid="uid://dy156wsog6ouu" path="res://2D/wall.png" id="5_fslp3"]
+[ext_resource type="Texture2D" uid="uid://b8dtmq2nmnj1k" path="res://2D/blackSqaure.png" id="6_fslp3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfihs"]
+size = Vector2(9.869186, 9.956395)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wfihs"]
+font_size = 56
+
+[node name="SSAO_2D" type="Node2D" unique_id=37216444]
+scale = Vector2(1.34, 1.34)
+script = ExtResource("1_glrmx")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1987094141]
+offset_left = -1286.0
+offset_top = -748.0
+offset_right = 1307.0
+offset_bottom = 765.0
+color = Color(0.10980392, 0.11764706, 0.14901961, 1)
+
+[node name="Camera" type="Camera2D" parent="." unique_id=1516825103]
+zoom = Vector2(0.75, 0.75)
+
+[node name="Outline" type="Sprite2D" parent="." unique_id=71973978]
+position = Vector2(-1, 2)
+scale = Vector2(1.935, 1.935)
+texture = ExtResource("2_onngf")
+
+[node name="Samples" type="Node2D" parent="." unique_id=1175376510]
+
+[node name="Sample" parent="Samples" unique_id=750252421 instance=ExtResource("3_1s21y")]
+position = Vector2(184, -518)
+
+[node name="Sample2" parent="Samples" unique_id=1578056027 instance=ExtResource("3_1s21y")]
+position = Vector2(-393, 254)
+
+[node name="Sample3" parent="Samples" unique_id=19788469 instance=ExtResource("3_1s21y")]
+position = Vector2(-112, -97.99999)
+
+[node name="Sample4" parent="Samples" unique_id=1205664571 instance=ExtResource("3_1s21y")]
+position = Vector2(-124, -370)
+
+[node name="Sample5" parent="Samples" unique_id=741490604 instance=ExtResource("3_1s21y")]
+position = Vector2(164, 464)
+
+[node name="Sample6" parent="Samples" unique_id=686504589 instance=ExtResource("3_1s21y")]
+position = Vector2(-140, 487)
+
+[node name="Sample7" parent="Samples" unique_id=762157191 instance=ExtResource("3_1s21y")]
+position = Vector2(-463, -109)
+
+[node name="Sample8" parent="Samples" unique_id=1837949227 instance=ExtResource("3_1s21y")]
+position = Vector2(521, -220)
+
+[node name="Sample9" parent="Samples" unique_id=1865379340 instance=ExtResource("3_1s21y")]
+position = Vector2(211, 215)
+
+[node name="Sample10" parent="Samples" unique_id=1738818980 instance=ExtResource("3_1s21y")]
+position = Vector2(-522, 26)
+
+[node name="Sample11" parent="Samples" unique_id=1145154414 instance=ExtResource("3_1s21y")]
+position = Vector2(-34, -70)
+
+[node name="Sample12" parent="Samples" unique_id=842327745 instance=ExtResource("3_1s21y")]
+position = Vector2(71.00003, 289)
+
+[node name="Sample13" parent="Samples" unique_id=501839142 instance=ExtResource("3_1s21y")]
+position = Vector2(-179, 183)
+
+[node name="Sample14" parent="Samples" unique_id=1718107350 instance=ExtResource("3_1s21y")]
+position = Vector2(-377, -421)
+
+[node name="Sample15" parent="Samples" unique_id=1175397952 instance=ExtResource("3_1s21y")]
+position = Vector2(323, 21)
+
+[node name="Sample16" parent="Samples" unique_id=1673840930 instance=ExtResource("3_1s21y")]
+position = Vector2(236, -309)
+
+[node name="Sample17" parent="Samples" unique_id=1707140323 instance=ExtResource("3_1s21y")]
+position = Vector2(137, -237)
+
+[node name="Sample18" parent="Samples" unique_id=1874393313 instance=ExtResource("3_1s21y")]
+position = Vector2(332, -526)
+
+[node name="Sample19" parent="Samples" unique_id=506413996 instance=ExtResource("3_1s21y")]
+position = Vector2(-240, -209)
+
+[node name="Sample20" parent="Samples" unique_id=979251763 instance=ExtResource("3_1s21y")]
+position = Vector2(-284, 335)
+
+[node name="Sample21" parent="Samples" unique_id=1833985211 instance=ExtResource("3_1s21y")]
+position = Vector2(-182, -584)
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=127555737]
+modulate = Color(3.7636862, 3.6217408, 3.5507681, 0.38039216)
+position = Vector2(1204, -58)
+scale = Vector2(351.185, 252.96)
+texture = ExtResource("5_fslp3")
+
+[node name="Area2D" type="Area2D" parent="Wall" unique_id=1042563948]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Area2D" unique_id=1618360906]
+visible = false
+position = Vector2(-0.007267475, 0.0363369)
+shape = SubResource("RectangleShape2D_wfihs")
+
+[node name="Sqaure" type="Sprite2D" parent="." unique_id=510804938]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_onngf")
+
+[node name="BlackSqaure" type="Sprite2D" parent="." unique_id=1748941064]
+position = Vector2(-3.8146973e-06, -3.8146973e-06)
+scale = Vector2(0.49999997, 0.49999997)
+texture = ExtResource("6_fslp3")
+
+[node name="Label" type="Label" parent="." unique_id=1544706187]
+visible = false
+offset_left = -1217.1642
+offset_top = -675.3731
+offset_right = -1094.1642
+offset_bottom = -652.3731
+text = "Occlusion Value: "
+label_settings = SubResource("LabelSettings_wfihs")

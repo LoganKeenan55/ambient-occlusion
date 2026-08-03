@@ -32,7 +32,6 @@ blend_shape_mode = 0
 [sub_resource type="Environment" id="Environment_m1upx"]
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ssao_enabled = true
 ssao_radius = 0.01
 ssao_intensity = 0.0
 ssao_power = 1e-05
@@ -50,7 +49,7 @@ needs_motion_vectors = false
 needs_normal_roughness = true
 script = ExtResource("3_7mycd")
 radius = 0.30000000000000004
-AOVersion = 3
+AOVersion = 2
 
 [sub_resource type="Compositor" id="Compositor_5vw27"]
 compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_rmhsj")])
@@ -75,8 +74,9 @@ environment = SubResource("Environment_m1upx")
 compositor = SubResource("Compositor_5vw27")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1154344127]
+visible = false
 shadow_enabled = true
 omni_range = 10.094
-omni_attenuation = -0.165
+omni_attenuation = 0.65
 
 [editable path="Scene"]

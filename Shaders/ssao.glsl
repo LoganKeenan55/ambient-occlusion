@@ -58,7 +58,7 @@ void main(){
 	//perspective divide
 	view /= view.w;
 
-	const int SAMPLE_COUNT = 16; //64
+	const int SAMPLE_COUNT = 64;
 
 	const vec3 samples[SAMPLE_COUNT] = vec3[](
 		vec3(-0,-0.05,0.09),
@@ -76,9 +76,9 @@ void main(){
 		vec3(0.12,0.05,0.01),
 		vec3(-0.08,-0.08,0.08),
 		vec3(0.06,0.11,0.06),
-		vec3(-0.02,0.14,0.04)
-	);
-		/*vec3(-0.14,0.07,0.03),
+		vec3(-0.02,0.14,0.04),
+	
+		vec3(-0.14,0.07,0.03),
 		vec3(-0.14,0.01,0.08),
 		vec3(-0.08,-0.15,0.04),
 		vec3(0.01,-0.14,0.11),
@@ -125,8 +125,8 @@ void main(){
 		vec3(0.01,-0.58,0.68),
 		vec3(0.32,0.83,0.24),
 		vec3(-0.19,-0.8,0.47),
-		vec3(-0.07,0.94,0.22)*/
-
+		vec3(-0.07,0.94,0.22)
+);
 
 	vec3 fragmentPos = view.xyz;
 
