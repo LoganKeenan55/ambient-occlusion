@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://odruvbr1p0pb"]
 
 [ext_resource type="Script" uid="uid://cbym8mbq1njt1" path="res://2D/Ssao2d.cs" id="1_glrmx"]
-[ext_resource type="Texture2D" uid="uid://f818jiwypogh" path="res://2D/circle2.png" id="2_onngf"]
+[ext_resource type="Texture2D" uid="uid://8wqgkyk3u0f6" path="res://2D/halfCircle.png" id="2_fslp3"]
 [ext_resource type="PackedScene" uid="uid://cje1byg2yddq0" path="res://2D/sample.tscn" id="3_1s21y"]
 [ext_resource type="Texture2D" uid="uid://dvv2ainxg02p2" path="res://2D/sqaure.png" id="3_onngf"]
 [ext_resource type="Texture2D" uid="uid://dy156wsog6ouu" path="res://2D/wall.png" id="5_fslp3"]
 [ext_resource type="Texture2D" uid="uid://b8dtmq2nmnj1k" path="res://2D/blackSqaure.png" id="6_fslp3"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfihs"]
-size = Vector2(9.869186, 9.956395)
-
 [sub_resource type="LabelSettings" id="LabelSettings_wfihs"]
 font_size = 56
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wfihs"]
+size = Vector2(9.869186, 9.956395)
 
 [node name="SSAO_2D" type="Node2D" unique_id=37216444]
 scale = Vector2(1.34, 1.34)
@@ -28,9 +28,9 @@ color = Color(0.10980392, 0.11764706, 0.14901961, 1)
 zoom = Vector2(0.75, 0.75)
 
 [node name="Outline" type="Sprite2D" parent="." unique_id=71973978]
-position = Vector2(-1, 2)
+position = Vector2(-1, -335)
 scale = Vector2(1.935, 1.935)
-texture = ExtResource("2_onngf")
+texture = ExtResource("2_fslp3")
 
 [node name="Samples" type="Node2D" parent="." unique_id=1175376510]
 
@@ -97,20 +97,6 @@ position = Vector2(-382.83582, 405.22385)
 [node name="Sample21" parent="Samples" unique_id=1833985211 instance=ExtResource("3_1s21y")]
 position = Vector2(-182, -584)
 
-[node name="Wall" type="Sprite2D" parent="." unique_id=127555737]
-modulate = Color(3.7636862, 3.6217408, 3.5507681, 0.38039216)
-position = Vector2(1204, -58)
-scale = Vector2(351.185, 252.96)
-texture = ExtResource("5_fslp3")
-
-[node name="Area2D" type="Area2D" parent="Wall" unique_id=1042563948]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Area2D" unique_id=1618360906]
-visible = false
-position = Vector2(-0.007267475, 0.0363369)
-shape = SubResource("RectangleShape2D_wfihs")
-
 [node name="Sqaure" type="Sprite2D" parent="." unique_id=510804938]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_onngf")
@@ -128,3 +114,17 @@ offset_right = -1094.1642
 offset_bottom = -652.3731
 text = "Occlusion Value: "
 label_settings = SubResource("LabelSettings_wfihs")
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=1334945924]
+modulate = Color(3.7636862, 3.6217408, 3.5507681, 0.38039216)
+position = Vector2(300.00012, -1267.1641)
+scale = Vector2(351.185, 252.96)
+texture = ExtResource("5_fslp3")
+
+[node name="Area2D" type="Area2D" parent="Wall" unique_id=1375145120]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Area2D" unique_id=1570203333]
+position = Vector2(-0.007267475, 0.0363369)
+shape = SubResource("RectangleShape2D_wfihs")

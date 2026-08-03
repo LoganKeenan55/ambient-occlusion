@@ -19,7 +19,7 @@ public partial class Ssao2d : Node2D
 		wall = GetNode<Sprite2D>("Wall");
 		blackSqaure = GetNode<Sprite2D>("BlackSqaure");
 		label = GetNode<Label>("Label");
-
+		distributeSamples(650);
 		Input.MouseMode = Input.MouseModeEnum.Hidden;
 
 		sampleCount = samples.GetChildCount();
@@ -44,7 +44,7 @@ public partial class Ssao2d : Node2D
 		
 
 		Color blackSquareColor = blackSqaure.Modulate;
-		blackSquareColor.A = occlusionValue / (float)sampleCount + .1f;
+		blackSquareColor.A = occlusionValue / (float)sampleCount;
 
 		blackSqaure.Modulate = blackSquareColor;
 
@@ -65,5 +65,28 @@ public partial class Ssao2d : Node2D
 		return count;
 	}
 
+public void distributeSamples(float radius)
+{
+    int count = samples.GetChildCount();
 
+    for (int i = 0; i < count; i++)
+    {
+        Sample sample = samples.GetChild(i) as Sample;
+
+        // Random angle in the upper hemisphere
+        float angle = GD.Randf() * Mathf.Pi;
+
+        Vector2 direction = new Vector2(
+            Mathf.Cos(angle),
+            -Mathf.Sin(angle)
+        );
+
+        // Random distance from the center
+        float distance = GD.Randf() * radius;
+
+        sample.Position = direction * distance;
+    }
 }
+}
+	
+
