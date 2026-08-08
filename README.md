@@ -7,6 +7,25 @@ SAO - Scalable Ambient Obscurance
 
 GTAO - Ground-Truth Ambient Occlusion
 
+## Requirements
+
+- **Godot (C# / .NET version)**  
+  This project uses **C#**, so you must install the **Godot .NET build**, not the standard version.
+
+- **.NET SDK**  
+  The **.NET SDK** is required to edit and run C# scripts in Godot.  
+  You can download it here: https://dotnet.microsoft.com/download
+
+
+# Controls
+- Set the AO Version in the exported var in the World Environment node
+- Build the Godot project
+- WASD, space bar, ctrl to move and fly around
+- 1: Flat Mode
+- 2: AO Only Mode
+- 3: Composited
+
+
 <img width="2560" height="1440" alt="19" src="https://github.com/user-attachments/assets/8954cfe2-81e2-4268-92a2-3c577a7f5372" />
 
 <img width="2560" height="1440" alt="12" src="https://github.com/user-attachments/assets/0bea5655-bc1a-452d-87c4-1532d8a830f0" />
