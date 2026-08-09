@@ -107,7 +107,6 @@ scale = Vector2(0.49999997, 0.49999997)
 texture = ExtResource("6_fslp3")
 
 [node name="Label" type="Label" parent="." unique_id=1544706187]
-visible = false
 offset_left = -1217.1642
 offset_top = -675.3731
 offset_right = -1094.1642
@@ -117,13 +116,11 @@ label_settings = SubResource("LabelSettings_wfihs")
 
 [node name="Wall" type="Sprite2D" parent="." unique_id=1334945924]
 modulate = Color(3.7636862, 3.6217408, 3.5507681, 0.38039216)
-position = Vector2(300.00012, -1267.1641)
-scale = Vector2(351.185, 252.96)
+position = Vector2(1626.4698, -423.19696)
+scale = Vector2(85.89103, 84.16659)
 texture = ExtResource("5_fslp3")
 
 [node name="Area2D" type="Area2D" parent="Wall" unique_id=1375145120]
-monitoring = false
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Area2D" unique_id=1570203333]
 position = Vector2(-0.007267475, 0.0363369)

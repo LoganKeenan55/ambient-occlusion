@@ -65,15 +65,13 @@ public partial class Ssao2d : Node2D
 		return count;
 	}
 
-public void distributeSamples(float radius)
-{
+public void distributeSamples(float radius){
     int count = samples.GetChildCount();
 
     for (int i = 0; i < count; i++)
     {
         Sample sample = samples.GetChild(i) as Sample;
 
-        // Random angle in the upper hemisphere
         float angle = GD.Randf() * Mathf.Pi;
 
         Vector2 direction = new Vector2(
@@ -81,8 +79,11 @@ public void distributeSamples(float radius)
             -Mathf.Sin(angle)
         );
 
-        // Random distance from the center
-        float distance = GD.Randf() * radius;
+        //bias samples toward the center
+        float t = (float)i / count;
+        float scale = Mathf.Lerp(0.1f, 1.0f, t * t);
+
+        float distance = scale * radius;
 
         sample.Position = direction * distance;
     }

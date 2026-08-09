@@ -28,14 +28,22 @@ script = ExtResource("1_4ui2x")
 mode = 2
 
 [node name="Camera" type="Camera3D" parent="." unique_id=1499403122]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2690318, 3.4216237, -3.8194275)
+transform = Transform3D(0.5312403, 0, 0.84722126, 0, 1, 0, -0.84722126, 0, 0.5312403, -0.7402418, 2.9489777, -1.3595295)
 script = ExtResource("2_nw1ph")
 
 [node name="SSAO" type="MeshInstance3D" parent="Camera" unique_id=2090614771]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.36794543)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03815782, 0, -0.346902)
 mesh = SubResource("QuadMesh_wfihs")
 
 [node name="scene" parent="." unique_id=1290402355 instance=ExtResource("4_sc7d2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2983246e-05, 0.0064344406, -0.0002528429)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=755489515]
 environment = SubResource("Environment_4ui2x")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=305931859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2952456, 3.4881458, 0.07381821)
+shadow_enabled = true
+distance_fade_enabled = true
+omni_range = 9.405
+omni_attenuation = -0.085

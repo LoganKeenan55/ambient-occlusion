@@ -136,7 +136,6 @@ void main() {
 
 	visibility /= float(slices);
 	float ao = pow(clamp(visibility, 0.0, 1.0), power);
-	ao = max(ao, 0.03); //never fully black
 
 	imageStore(
 		aoImage,

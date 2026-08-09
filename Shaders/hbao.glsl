@@ -11,11 +11,11 @@ layout(push_constant) uniform PushConstants {
 	float padding;
 } push_constants;
 
-const float AO_INTENSITY = 2.0;
+const float AO_INTENSITY = 2.0; //artistic control! oh no!
 const float AO_TAN_BIAS = 0.57735026919; //tan(30 deg)
 const float AO_MAX_RADIUS_PIXELS = 50.0;
-const int AO_NUM_DIRECTIONS = 16;
-const int AO_NUM_STEPS = 12;
+const int AO_NUM_DIRECTIONS = 8;
+const int AO_NUM_STEPS = 6;
 
 layout(std140, set = 0, binding = 3) uniform CameraData {
 	mat4 PROJECTION_MATRIX;

@@ -24,8 +24,8 @@ layout(set = 0, binding = 2) uniform sampler2D noiseTexture;
 
 layout(set = 0, binding = 4) uniform sampler2D normalTexture;
 
-const int samples = 11; //11
-const int spiralTurns = 7; //7
+const int samples = 11;
+const int spiralTurns = 7;
 const float EPSILON = 0.01;
 const float intensity = 0.3;
 const float power = 1.5; //artistic control! oh no!

@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://73bn6o36rcl2"]
+
+[ext_resource type="Texture2D" uid="uid://dvv2ainxg02p2" path="res://2D/sqaure.png" id="1_mqkba"]
+[ext_resource type="Script" uid="uid://jb7xjs4tsysx" path="res://2D/hbao2d.cs" id="1_vumuy"]
+[ext_resource type="Script" uid="uid://30rbwl8j0rh2" path="res://2D/ColorRect.cs" id="2_mgftl"]
+[ext_resource type="Texture2D" uid="uid://dy156wsog6ouu" path="res://2D/wall.png" id="4_73naj"]
+[ext_resource type="Texture2D" uid="uid://b8dtmq2nmnj1k" path="res://2D/blackSqaure.png" id="5_y00ge"]
+
+[node name="hbao_2d" type="Node2D" unique_id=513826462]
+script = ExtResource("1_vumuy")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=843582896]
+offset_left = -1718.0
+offset_top = -968.0
+offset_right = 1717.0
+offset_bottom = 976.0
+color = Color(0.10980392, 0.11764706, 0.14901961, 1)
+script = ExtResource("2_mgftl")
+
+[node name="Sqaure" type="Sprite2D" parent="." unique_id=2017817588]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_mqkba")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1656770237]
+zoom = Vector2(0.75, 0.75)
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=1772407640]
+modulate = Color(3.7636862, 3.6217408, 3.5507681, 0.38039216)
+position = Vector2(830.99994, 1668.0419)
+scale = Vector2(85.89103, 199.39165)
+texture = ExtResource("4_73naj")
+
+[node name="Corner" type="Node2D" parent="Wall" unique_id=1748258746]
+position = Vector2(-4.994701, -5.001985)
+scale = Vector2(0.01164266, 0.0118812)
+
+[node name="BlackSqaure" type="Sprite2D" parent="." unique_id=674241906]
+position = Vector2(-3.8146973e-06, -3.8146973e-06)
+scale = Vector2(0.49999997, 0.49999997)
+texture = ExtResource("5_y00ge")
