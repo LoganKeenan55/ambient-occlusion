@@ -17,7 +17,7 @@ GTAO - Ground-Truth Ambient Occlusion
   You can download it here: https://dotnet.microsoft.com/download
 
 
-# Controls
+# Setup / Controls
 - Set the AO Version in the exported var in the World Environment node
 - Build the Godot project
 - WASD, space bar, ctrl to move and fly around
